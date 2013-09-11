@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DataPackage>
+	<timestamp>1378916763.84</timestamp>
+	<host>localhost</host>
+	<data>
+		<item>
+			<key>KEY1</key>
+			<val>value1</val>
+		</item>
+		<item>
+			<key>KEY2</key>
+			<val>value2</val>
+		</item>
+	</data>
+</DataPackage>

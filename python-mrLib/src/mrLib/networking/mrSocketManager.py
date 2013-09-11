@@ -138,12 +138,12 @@ class mrSocketManager(object):
                 if sock != self.__socket:
                     sock.send(data)
     
-    def sendData(self, obj):
+    def sendData(self, datapackage):
         '''
         Sends a data package object
         '''   
         if self.__connected:
-            self.__send( obj )
+            self.__send( datapackage.toxml() )
             
     def isConnected(self):
         '''
