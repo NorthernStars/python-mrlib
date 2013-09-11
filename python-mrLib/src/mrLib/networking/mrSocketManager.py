@@ -6,6 +6,9 @@ Created on 11.09.2013
 import socket
 from select import select
 from thread import start_new_thread
+from src.mrLib.networking.mrProtocol import mrProtocolData
+from mrProtocol import PROTOCOL_ENCODING, createFromDataPackage
+import DataPackage
 
 class mrSocketManager(object):
     '''
@@ -74,7 +77,9 @@ class mrSocketManager(object):
                         # read data and append to data buffer
                         data = sock.recv( self.__recieveBufferSize )
                         if data:
-                            self.__dataBuffer.append( data )
+                            print data
+                            datapackage = DataPackage.CreateFromDocument(data)
+                            self.__addDatapackage( datapackage )
                     except:
                         # socket offline
                         sock.close()
@@ -99,12 +104,22 @@ class mrSocketManager(object):
             # read data and append to data buffer
             data = self.__socket.recv( self.__recieveBufferSize )
             if data:
-                self.__dataBuffer.append( data )
+                datapackage = DataPackage.CreateFromDocument(data)
+                self.__addDatapackage( datapackage )
             
         # close socket
         print "client offline"
         self.__connected = False
         self.__socket.close()
+        
+    def __addDatapackage(self, datapackage=None):
+        '''
+        Adds a data package to data buffer
+        '''
+        if type(datapackage) == DataPackage.DataPackage:
+            protocoldata = createFromDataPackage(datapackage)
+            if protocoldata:
+                self.__dataBuffer.append( protocoldata )
             
     
     def stopSocket(self):
@@ -122,6 +137,16 @@ class mrSocketManager(object):
         tmpDataBuffer = self.__dataBuffer
         self.__dataBuffer = []
         return tmpDataBuffer
+    
+    def getFirstData(self):
+        '''
+        Returns first data in data buffer
+        '''
+        if len(self.__dataBuffer) > 0:
+            data = self.__dataBuffer[0]
+            self.__dataBuffer.remove(data)
+            return data
+        return None
     
     def __send(self, data):
         '''
@@ -142,8 +167,8 @@ class mrSocketManager(object):
         '''
         Sends a data package object
         '''   
-        if self.__connected:
-            self.__send( datapackage.toxml() )
+        if self.__connected and type(datapackage) == mrProtocolData:
+            self.__send( datapackage.toDataPackage().toxml(encoding=PROTOCOL_ENCODING) )
             
     def isConnected(self):
         '''

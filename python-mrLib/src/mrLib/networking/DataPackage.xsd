@@ -4,6 +4,7 @@
 	<xsd:complexType name="DataPackage">
 		<xsd:sequence>
 			<xsd:element name="timestamp" type="xsd:float" default="0.0"/>
+			<xsd:element name="type" type="xsd:string" default="None"/>
 			<xsd:element name="host" type="xsd:string" default="None"/>
 			<xsd:element name="data" type="Data">
 			</xsd:element>

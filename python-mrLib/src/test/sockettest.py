@@ -5,8 +5,7 @@ Created on 11.09.2013
 '''
 from mrLib.networking.mrSocketManager import mrSocketManager
 from time import sleep
-from time import time
-import src.mrLib.networking.DataPackage as DataPackage
+import src.mrLib.networking.mrProtocol as mrProtocol
 
 if __name__ == '__main__':
     
@@ -14,12 +13,11 @@ if __name__ == '__main__':
     print "-----------------------------------"
     
     # generate data package
-    datapackage = DataPackage.DataPackage()
-    datapackage.timestamp = time()
-    datapackage.data = DataPackage.Data()
-    datapackage.data.item.append( DataPackage.Item("KEY1", "value1") )
-    datapackage.data.item.append( DataPackage.Item("KEY2", "value2") )
-
+    data = mrProtocol.mrProtocolData()
+    data.addDataItem("KEY1", "value1")
+    data.addDataItem("KEY1", "value2")
+    print data
+    
     # create server
     server = mrSocketManager( server=True )
     
@@ -33,26 +31,23 @@ if __name__ == '__main__':
     
     # wait for clients
     while not client1.isConnected() or not client2.isConnected():
-        pass
-       
+        pass       
     sleep(1.0)
-    datapackage.host = "client 1"
-    datapackage.timestamp = time()
-    client1.sendData( datapackage )
+    
+    data.setHost("Client 1")
+    client1.sendData( data )
     sleep(0.5)
-    print "Server Recv:", server.getDataBuffer()[0]
+    print "Server Recv:", server.getFirstData()
     print "-----------------------------------"
     
-    datapackage.host = "client 2"
-    datapackage.timestamp = time()
-    client2.sendData( datapackage )
+    data.setHost("Client 2")
+    client2.sendData( data )
     sleep(0.5)
-    print "Server Recv:", server.getDataBuffer()[0]
+    print "Server Recv:", server.getFirstData()
     print "-----------------------------------"
     
-    datapackage.host = "server"
-    datapackage.timestamp = time()
-    server.sendData( datapackage )
+    data.setHost("Server")
+    server.sendData( data )
     sleep(0.5)
     
     for msg in client1.getDataBuffer():

@@ -1,19 +1,16 @@
 # ./DataPackage.py
 # -*- coding: utf-8 -*-
 # PyXB bindings for NM:e92452c8d3e28a9e27abfc9994d2007779e7f4c9
-# Generated 2013-09-11 18:30:56.028924 by PyXB version 1.2.2
+# Generated 2013-09-11 20:34:58.593685 by PyXB version 1.2.2
 # Namespace AbsentNamespace0
 
-import pyxb
-import pyxb.binding
 import pyxb.binding.saxer
 import StringIO
 import pyxb.utils.utility
 import pyxb.utils.domutils
-import sys
 
 # Unique identifier for bindings created at the same time
-_GenerationUID = pyxb.utils.utility.UniqueIdentifier('urn:uuid:887be5bc-1aff-11e3-a602-00e0429c03e4')
+_GenerationUID = pyxb.utils.utility.UniqueIdentifier('urn:uuid:dc941b54-1b10-11e3-9f97-0019d275b706')
 
 # Version of PyXB used to generate the bindings
 _PyXBVersion = '1.2.2'
@@ -83,21 +80,29 @@ class DataPackage (pyxb.binding.basis.complexTypeDefinition):
     timestamp = property(__timestamp.value, __timestamp.set, None, None)
 
     
+    # Element type uses Python identifier type
+    __type = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'type'), 'type', '__AbsentNamespace0_DataPackage_type', False, pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 7, 3), )
+
+    
+    type = property(__type.value, __type.set, None, None)
+
+    
     # Element host uses Python identifier host
-    __host = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'host'), 'host', '__AbsentNamespace0_DataPackage_host', False, pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 7, 3), )
+    __host = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'host'), 'host', '__AbsentNamespace0_DataPackage_host', False, pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 8, 3), )
 
     
     host = property(__host.value, __host.set, None, None)
 
     
     # Element data uses Python identifier data
-    __data = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'data'), 'data', '__AbsentNamespace0_DataPackage_data', False, pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 8, 3), )
+    __data = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'data'), 'data', '__AbsentNamespace0_DataPackage_data', False, pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 9, 3), )
 
     
     data = property(__data.value, __data.set, None, None)
 
     _ElementMap.update({
         __timestamp.name() : __timestamp,
+        __type.name() : __type,
         __host.name() : __host,
         __data.name() : __data
     })
@@ -114,13 +119,13 @@ class Data (pyxb.binding.basis.complexTypeDefinition):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_ELEMENT_ONLY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'Data')
-    _XSDLocation = pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 13, 1)
+    _XSDLocation = pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 14, 1)
     _ElementMap = {}
     _AttributeMap = {}
     # Base type is pyxb.binding.datatypes.anyType
     
     # Element item uses Python identifier item
-    __item = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'item'), 'item', '__AbsentNamespace0_Data_item', True, pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 15, 3), )
+    __item = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'item'), 'item', '__AbsentNamespace0_Data_item', True, pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 16, 3), )
 
     
     item = property(__item.value, __item.set, None, None)
@@ -141,20 +146,20 @@ class Item (pyxb.binding.basis.complexTypeDefinition):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_ELEMENT_ONLY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'Item')
-    _XSDLocation = pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 19, 1)
+    _XSDLocation = pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 20, 1)
     _ElementMap = {}
     _AttributeMap = {}
     # Base type is pyxb.binding.datatypes.anyType
     
     # Element key uses Python identifier key
-    __key = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'key'), 'key', '__AbsentNamespace0_Item_key', False, pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 21, 7), )
+    __key = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'key'), 'key', '__AbsentNamespace0_Item_key', False, pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 22, 7), )
 
     
     key = property(__key.value, __key.set, None, None)
 
     
     # Element val uses Python identifier val
-    __val = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'val'), 'val', '__AbsentNamespace0_Item_val', False, pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 22, 7), )
+    __val = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'val'), 'val', '__AbsentNamespace0_Item_val', False, pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 23, 7), )
 
     
     val = property(__val.value, __val.set, None, None)
@@ -173,9 +178,11 @@ Namespace.addCategoryObject('typeBinding', u'Item', Item)
 
 DataPackage._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'timestamp'), pyxb.binding.datatypes.float, scope=DataPackage, location=pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 6, 3), unicode_default=u'0.0'))
 
-DataPackage._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'host'), pyxb.binding.datatypes.string, scope=DataPackage, location=pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 7, 3), unicode_default=u'None'))
+DataPackage._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'type'), pyxb.binding.datatypes.string, scope=DataPackage, location=pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 7, 3), unicode_default=u'None'))
 
-DataPackage._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'data'), Data, scope=DataPackage, location=pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 8, 3)))
+DataPackage._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'host'), pyxb.binding.datatypes.string, scope=DataPackage, location=pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 8, 3), unicode_default=u'None'))
+
+DataPackage._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'data'), Data, scope=DataPackage, location=pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 9, 3)))
 
 def _BuildAutomaton ():
     # Remove this helper function from the namespace after it is invoked
@@ -190,13 +197,17 @@ def _BuildAutomaton ():
     st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_0)
     final_update = None
-    symbol = pyxb.binding.content.ElementUse(DataPackage._UseForTag(pyxb.namespace.ExpandedName(None, u'host')), pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 7, 3))
+    symbol = pyxb.binding.content.ElementUse(DataPackage._UseForTag(pyxb.namespace.ExpandedName(None, u'type')), pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 7, 3))
     st_1 = fac.State(symbol, is_initial=False, final_update=final_update, is_unordered_catenation=False)
     states.append(st_1)
-    final_update = set()
-    symbol = pyxb.binding.content.ElementUse(DataPackage._UseForTag(pyxb.namespace.ExpandedName(None, u'data')), pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 8, 3))
+    final_update = None
+    symbol = pyxb.binding.content.ElementUse(DataPackage._UseForTag(pyxb.namespace.ExpandedName(None, u'host')), pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 8, 3))
     st_2 = fac.State(symbol, is_initial=False, final_update=final_update, is_unordered_catenation=False)
     states.append(st_2)
+    final_update = set()
+    symbol = pyxb.binding.content.ElementUse(DataPackage._UseForTag(pyxb.namespace.ExpandedName(None, u'data')), pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 9, 3))
+    st_3 = fac.State(symbol, is_initial=False, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_3)
     transitions = []
     transitions.append(fac.Transition(st_1, [
          ]))
@@ -206,14 +217,18 @@ def _BuildAutomaton ():
          ]))
     st_1._set_transitionSet(transitions)
     transitions = []
+    transitions.append(fac.Transition(st_3, [
+         ]))
     st_2._set_transitionSet(transitions)
+    transitions = []
+    st_3._set_transitionSet(transitions)
     return fac.Automaton(states, counters, False, containing_state=None)
 DataPackage._Automaton = _BuildAutomaton()
 
 
 
 
-Data._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'item'), Item, scope=Data, location=pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 15, 3)))
+Data._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'item'), Item, scope=Data, location=pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 16, 3)))
 
 def _BuildAutomaton_ ():
     # Remove this helper function from the namespace after it is invoked
@@ -222,12 +237,12 @@ def _BuildAutomaton_ ():
     import pyxb.utils.fac as fac
 
     counters = set()
-    cc_0 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 15, 3))
+    cc_0 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 16, 3))
     counters.add(cc_0)
     states = []
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_0, False))
-    symbol = pyxb.binding.content.ElementUse(Data._UseForTag(pyxb.namespace.ExpandedName(None, u'item')), pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 15, 3))
+    symbol = pyxb.binding.content.ElementUse(Data._UseForTag(pyxb.namespace.ExpandedName(None, u'item')), pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 16, 3))
     st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_0)
     transitions = []
@@ -240,9 +255,9 @@ Data._Automaton = _BuildAutomaton_()
 
 
 
-Item._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'key'), pyxb.binding.datatypes.string, scope=Item, location=pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 21, 7)))
+Item._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'key'), pyxb.binding.datatypes.string, scope=Item, location=pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 22, 7)))
 
-Item._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'val'), pyxb.binding.datatypes.string, scope=Item, location=pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 22, 7)))
+Item._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'val'), pyxb.binding.datatypes.string, scope=Item, location=pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 23, 7)))
 
 def _BuildAutomaton_2 ():
     # Remove this helper function from the namespace after it is invoked
@@ -253,11 +268,11 @@ def _BuildAutomaton_2 ():
     counters = set()
     states = []
     final_update = None
-    symbol = pyxb.binding.content.ElementUse(Item._UseForTag(pyxb.namespace.ExpandedName(None, u'key')), pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 21, 7))
+    symbol = pyxb.binding.content.ElementUse(Item._UseForTag(pyxb.namespace.ExpandedName(None, u'key')), pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 22, 7))
     st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_0)
     final_update = set()
-    symbol = pyxb.binding.content.ElementUse(Item._UseForTag(pyxb.namespace.ExpandedName(None, u'val')), pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 22, 7))
+    symbol = pyxb.binding.content.ElementUse(Item._UseForTag(pyxb.namespace.ExpandedName(None, u'val')), pyxb.utils.utility.Location('/home/hannes/git/python-mrlib/python-mrLib/src/mrLib/networking/DataPackage.xsd', 23, 7))
     st_1 = fac.State(symbol, is_initial=False, final_update=final_update, is_unordered_catenation=False)
     states.append(st_1)
     transitions = []
