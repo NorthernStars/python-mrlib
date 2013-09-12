@@ -3,20 +3,21 @@ Created on 11.09.2013
 
 @author: hannes
 '''
+
 from mrLib.networking.mrSocketManager import mrSocketManager
+from src.mrLib.networking import mrProtocol
+from src.mrLib.logger import mrLogger
 from time import sleep
-import src.mrLib.networking.mrProtocol as mrProtocol
 
 if __name__ == '__main__':
     
     print "test started ..."
-    print "-----------------------------------"
+    mrLogger.logClear()
     
     # generate data package
     data = mrProtocol.mrProtocolData()
     data.addDataItem("KEY1", "value1")
     data.addDataItem("KEY1", "value2")
-    print data
     
     # create server
     server = mrSocketManager( server=True )
@@ -37,24 +38,21 @@ if __name__ == '__main__':
     data.setHost("Client 1")
     client1.sendData( data )
     sleep(0.5)
-    print "Server Recv:", server.getFirstData()
-    print "-----------------------------------"
+    mrLogger.log( "Server Recv: " + str(server.getFirstData()) )
     
     data.setHost("Client 2")
     client2.sendData( data )
     sleep(0.5)
-    print "Server Recv:", server.getFirstData()
-    print "-----------------------------------"
+    mrLogger.log( "Server Recv: " + str(server.getFirstData()) )
     
     data.setHost("Server")
     server.sendData( data )
     sleep(0.5)
     
-    for msg in client1.getDataBuffer():
-        print "Client1 Recv:", msg
+    while client1.hasNextData():
+        mrLogger.log( "Client1 Recv: " + str(client1.getFirstData()) )
         
-    for msg in client2.getDataBuffer():
-        print "Client2 Recv:", msg
-    print "-----------------------------------"
+    while client2.hasNextData():
+        mrLogger.log( "Client2 Recv: " + str(client2.getFirstData()) )
     
     print "test finished"

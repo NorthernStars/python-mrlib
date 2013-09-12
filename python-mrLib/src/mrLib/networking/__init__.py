@@ -1,1 +1,2 @@
-__all__ = ["mrSocketManager", "mrProtocol"]
+__all__ = ["mrSocketManager",
+           "mrProtocol"]

@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <DataPackage>
-	<timestamp>1378927144.57</timestamp>
+	<timestamp>1378977440.45</timestamp>
 	<type>None</type>
 	<host>Client 1</host>
-	<data>
-		<item>
+	<Data>
+		<Item>
 			<key>KEY1</key>
 			<val>value1</val>
-		</item>
-	</data>
+		</Item>
+		<Item>
+			<key>KEY2</key>
+			<val>value2</val>
+		</Item>
+	</Data>
 </DataPackage>

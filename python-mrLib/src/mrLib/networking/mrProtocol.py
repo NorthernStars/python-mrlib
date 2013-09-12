@@ -14,14 +14,14 @@ PROTOCOL_TYPE_GAMEDATA = "GameData"
 
 PROTOCOL_ENCODING= "utf-8"
 
-@staticmethod
+
 def createFromDataPackage(dataPackage=None):
     '''
     Converts data package to protocol data object
     @return: mrProtocolData object
     '''
-    dataPackage = DataPackage()
-    if type(dataPackage) == DataPackage:
+    #dataPackage = DataPackage()
+    try:
         # get basic data
         host = str(dataPackage.host)
         dataType = str(dataPackage.type)
@@ -34,12 +34,12 @@ def createFromDataPackage(dataPackage=None):
                                       timestamp=timestamp )
         
         # get data
-        for item in dataPackage.data:
+        for item in dataPackage.Data.Item:
             protocolData.addDataItem(item.key, item.val)
             
         return protocolData
-        
-    return None
+    except:
+        return None
 
 
 class mrProtocolData(object):
@@ -53,21 +53,18 @@ class mrProtocolData(object):
     __timestamp = None
 
 
-    def __init__(self, dataType=PROTOCOL_TYPE_NONE, host="localhost", data={}, timestamp=None):
+    def __init__(self, dataType=PROTOCOL_TYPE_NONE, host="localhost", timestamp=None):
         '''
         Constructor
         @param dataType: Protocol data type
         @param host: Name of host
-        @param data: Dictionary of data with key and value
         @param timestamp: Timestamp of data
         '''
         self.__dataType = dataType
+        self.__data = {}
         
         if type(host) == str:
             self.__host = host
-        
-        if type(data) == dict:
-            self.__data = data
             
         if timestamp != None:
             self.__timestamp = timestamp
@@ -196,11 +193,12 @@ class mrProtocolData(object):
         
         for key in self.__data:
             if type(self.__data[key]) == list:
-                item = Item( str(key), str(self.__data[key]) )  
-                data.item.append( item )
+                for val in self.__data[key]:
+                    item = Item( str(key), str(val) )  
+                    data.Item.append( item )
         
         # add data to data package
-        dataPackage.data = data
+        dataPackage.Data = data
         
         return dataPackage
     
@@ -208,7 +206,7 @@ class mrProtocolData(object):
         '''
         Overrides objects string method
         '''
-        txt = str(self.__host) + ":" + str(self.__dataType) + ":"
+        txt = str(self.__host) + " : " + str(self.__dataType) + " : "
         if self.__timestamp != None:
             txt += str( datetime.fromtimestamp(self.__timestamp) )
         else:

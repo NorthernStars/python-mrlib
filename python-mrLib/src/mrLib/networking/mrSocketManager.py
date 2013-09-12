@@ -37,6 +37,9 @@ class mrSocketManager(object):
         self.__host = host
         self.__port = port
         self.__server = server
+        self.__socket = None
+        self.__dataBuffer = []
+        self.__connected = False
         
         if server:
             start_new_thread( self.__startServerSocket, () )
@@ -77,7 +80,6 @@ class mrSocketManager(object):
                         # read data and append to data buffer
                         data = sock.recv( self.__recieveBufferSize )
                         if data:
-                            print data
                             datapackage = DataPackage.CreateFromDocument(data)
                             self.__addDatapackage( datapackage )
                     except:
@@ -108,7 +110,6 @@ class mrSocketManager(object):
                 self.__addDatapackage( datapackage )
             
         # close socket
-        print "client offline"
         self.__connected = False
         self.__socket.close()
         
@@ -116,10 +117,12 @@ class mrSocketManager(object):
         '''
         Adds a data package to data buffer
         '''
-        if type(datapackage) == DataPackage.DataPackage:
+        try:
             protocoldata = createFromDataPackage(datapackage)
             if protocoldata:
                 self.__dataBuffer.append( protocoldata )
+        except:
+            pass
             
     
     def stopSocket(self):
@@ -134,19 +137,26 @@ class mrSocketManager(object):
         '''
         Returns the data package buffer
         '''
-        tmpDataBuffer = self.__dataBuffer
-        self.__dataBuffer = []
-        return tmpDataBuffer
+        return self.__dataBuffer
     
     def getFirstData(self):
         '''
         Returns first data in data buffer
         '''
+        #print "data buffer", self.__dataBuffer.__repr__()
         if len(self.__dataBuffer) > 0:
             data = self.__dataBuffer[0]
             self.__dataBuffer.remove(data)
             return data
         return None
+    
+    def hasNextData(self):
+        '''
+        Returns True if data buffer has more items
+        '''
+        if len(self.__dataBuffer) > 0:
+            return True
+        return False
     
     def __send(self, data):
         '''
