@@ -23,6 +23,8 @@ class mrSocketManager(object):
     __dataBuffer = []
     __connected = False
     __server = False
+    __onClientAdded = []
+    __onDataRecieved = []
     
     __recieveBufferSize = 4096
     
@@ -40,6 +42,8 @@ class mrSocketManager(object):
         self.__socket = None
         self.__dataBuffer = []
         self.__connected = False
+        self.__onClientAdded = []
+        self.__onDataRecieved = []
         
         if server:
             start_new_thread( self.__startServerSocket, () )
@@ -73,6 +77,7 @@ class mrSocketManager(object):
                     # new connection
                     sockdata = self.__socket.accept()
                     self.__connectedClients.append( sockdata[0] )
+                    self.__onClientAddedListener(sockdata)
                     
                 else:
                     # recieved data
@@ -82,6 +87,7 @@ class mrSocketManager(object):
                         if data:
                             datapackage = DataPackage.CreateFromDocument(data)
                             self.__addDatapackage( datapackage )
+                            self.__onDataRecievedListener()
                     except:
                         # socket offline
                         sock.close()
@@ -108,6 +114,7 @@ class mrSocketManager(object):
             if data:
                 datapackage = DataPackage.CreateFromDocument(data)
                 self.__addDatapackage( datapackage )
+                self.__onDataRecievedListener()
             
         # close socket
         self.__connected = False
@@ -123,7 +130,53 @@ class mrSocketManager(object):
                 self.__dataBuffer.append( protocoldata )
         except:
             pass
+        
+    def __onClientAddedListener(self, clientData):
+        '''
+        Function to handle onClientAddedListener
+        '''
+        for listener in self.__onClientAdded:
+            listener(clientData)
             
+    def __onDataRecievedListener(self):
+        '''
+        Function to handle onDataRecievedListener
+        '''
+        for listener in self.__onDataRecieved:
+            listener(self)
+            
+    def addOnClientAddedListener(self, listener):
+        '''
+        Sets onClientAdded listener
+        @param listener: Listener function.
+        Arguments of listener function is a tuple of
+        socket and client address data (sock, (host, port)).
+        '''
+        if listener not in self.__onClientAdded:
+            self.__onClientAdded.append( listener )
+        
+    def addOnDataRecievedListener(self, listener):
+        '''
+        Sets onDataRecieved listener
+        @param listener: Listener function
+        Argument of listener function is the mrSocketManager
+        that recieved new data.
+        '''
+        if listener not in self.__onDataRecieved:
+            self.__onDataRecieved.append( listener )
+        
+    def removeOnClientAddedListener(self, listener ):
+        '''
+        Removes onClientAdded listener
+        '''
+        self.__onClientAdded.remove( listener )
+        
+    def removeOnDataRecievedListener(self, listener):
+        '''
+        Removes onDataRecieved listener
+        @param listener: Listener to remove
+        '''
+        self.__onDataRecieved.remove( listener )
     
     def stopSocket(self):
         '''
@@ -191,3 +244,11 @@ class mrSocketManager(object):
         Returns number of connected clients
         '''
         return len(self.__connectedClients)
+    
+    def getSocketAddress(self):
+        '''
+        Returns socket address
+        '''
+        if self.__socket != None:
+            return self.__socket.getsockname()
+        return None

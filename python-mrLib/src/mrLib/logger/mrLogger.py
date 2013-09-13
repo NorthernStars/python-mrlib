@@ -7,10 +7,10 @@ from time import strftime
 from os import remove
 from os.path import isfile
 
-LOG_LEVEL = {"error": 0,
-             "default": 1,
-             "info": 2,
-             "debug": 3 }
+LOG_LEVEL = {"debug": 0,
+             "info": 1,
+             "default": 2,
+             "error": 3}
 LOG_LEVEL_COLOR = {"error": "#ff8585",
                    "default": "#eeeeee",
                    "info": "#e6f1ff",
