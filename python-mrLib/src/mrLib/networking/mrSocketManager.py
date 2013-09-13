@@ -58,9 +58,12 @@ class mrSocketManager(object):
         self.__stopSocket = False
         self.__socket = socket.socket( socket.AF_INET, socket.SOCK_STREAM )
         self.__socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.__socket.bind( (self.__host, self.__port) )
-        self.__socket.listen(1)
-        self.__connected = True
+        try:
+            self.__socket.bind( (self.__host, self.__port) )
+            self.__socket.listen(1)
+            self.__connected = True
+        except:
+            return
         
         self.__connectedClients.append( self.__socket )
         sock = socket.socket()
@@ -87,7 +90,7 @@ class mrSocketManager(object):
                         if data:
                             datapackage = DataPackage.CreateFromDocument(data)
                             self.__addDatapackage( datapackage )
-                            self.__onDataRecievedListener()
+                            self.__onDataRecievedListener(datapackage)
                     except:
                         # socket offline
                         sock.close()
@@ -105,8 +108,11 @@ class mrSocketManager(object):
         '''
         # initiate socket
         self.__socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.__socket.connect( (self.__host, self.__port) )
-        self.__connected = True
+        try:
+            self.__socket.connect( (self.__host, self.__port) )
+            self.__connected = True
+        except:
+            return
         
         while not self.__stopSocket:
             # read data and append to data buffer
@@ -114,7 +120,7 @@ class mrSocketManager(object):
             if data:
                 datapackage = DataPackage.CreateFromDocument(data)
                 self.__addDatapackage( datapackage )
-                self.__onDataRecievedListener()
+                self.__onDataRecievedListener(datapackage)
             
         # close socket
         self.__connected = False
@@ -138,12 +144,12 @@ class mrSocketManager(object):
         for listener in self.__onClientAdded:
             listener(clientData)
             
-    def __onDataRecievedListener(self):
+    def __onDataRecievedListener(self, datapackage):
         '''
         Function to handle onDataRecievedListener
         '''
         for listener in self.__onDataRecieved:
-            listener(self)
+            listener(self, datapackage)
             
     def addOnClientAddedListener(self, listener):
         '''
@@ -160,7 +166,7 @@ class mrSocketManager(object):
         Sets onDataRecieved listener
         @param listener: Listener function
         Argument of listener function is the mrSocketManager
-        that recieved new data.
+        that recieved new data and the datapackage.
         '''
         if listener not in self.__onDataRecieved:
             self.__onDataRecieved.append( listener )
@@ -232,6 +238,13 @@ class mrSocketManager(object):
         '''   
         if self.__connected and type(datapackage) == mrProtocolData:
             self.__send( datapackage.toDataPackage().toxml(encoding=PROTOCOL_ENCODING) )
+            
+    def pushRecvData(self, dataPackage):
+        '''
+        Pushed data package into recieve buffer
+        '''
+        self.__addDatapackage( dataPackage )
+        self.__onDataRecievedListener( dataPackage )
             
     def isConnected(self):
         '''

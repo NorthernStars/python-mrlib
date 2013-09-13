@@ -5,6 +5,7 @@ Created on 11.09.2013
 '''
 
 from mrLib.networking.mrSocketManager import mrSocketManager
+from src.mrLib.networking.mrSocketMonitor import mrSocketMonitor
 from src.mrLib.networking import mrProtocol
 from src.mrLib.logger import mrLogger
 from time import sleep
@@ -13,7 +14,7 @@ from time import sleep
 def onClientAddedListener(clientdata):
     mrLogger.log( "new client " + str(clientdata[1]) + " added", mrLogger.LOG_LEVEL['info'] )
     
-def onDataRecievedListener(socket):
+def onDataRecievedListener(socket, data):
     mrLogger.log( str(socket.getSocketAddress()) + " recieved data", mrLogger.LOG_LEVEL['info'] )
 
 
@@ -36,6 +37,9 @@ if __name__ == '__main__':
     # wait for server
     while not server.isConnected():
         pass
+    
+    # enable socket monitor
+    monitor = mrSocketMonitor( server )
     
     # create clients
     client1 = mrSocketManager()   
@@ -72,6 +76,18 @@ if __name__ == '__main__':
         
     while client2.hasNextData():
         mrLogger.log( "Client2 Recv: " + str(client2.getFirstData()), mrLogger.LOG_LEVEL['debug'] )
+        
+        
+    # replay monitored data
+    monitor.startReplay()
+    timestamp = 0.0
+    while monitor.getBufferSize() > 0:
+        monitor.updateTimestamp(timestamp)
+        timestamp += 1000
+        
+    while server.hasNextData():
+        mrLogger.log( "Server Recv: " + str(server.getFirstData()), mrLogger.LOG_LEVEL['debug'] )
+    
     
     mrLogger.log( "sockettest finished" )
     print "test finished"
