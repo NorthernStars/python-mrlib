@@ -5,7 +5,6 @@ Created on 13.09.2013
 '''
 from mrSocketManager import mrSocketManager
 from time import time
-from src.mrLib.networking.DataPackage import DataPackage
 
 class mrSocketMonitor(object):
     '''
