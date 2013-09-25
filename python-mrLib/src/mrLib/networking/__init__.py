@@ -1,3 +1,4 @@
 __all__ = ["mrSocketManager",
            "mrProtocol",
-           "mrSocketMonitor"]
+           "mrSocketMonitor",
+           "mrDataTags"]
