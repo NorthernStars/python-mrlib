@@ -5,9 +5,9 @@ Created on 11.09.2013
 '''
 
 from mrLib.networking.mrSocketManager import mrSocketManager
-from src.mrLib.networking.mrSocketMonitor import mrSocketMonitor
-from src.mrLib.networking import mrProtocol
-from src.mrLib.logger import mrLogger
+from mrLib.networking.mrSocketMonitor import mrSocketMonitor
+from mrLib.networking import mrProtocol
+from mrLib.logging import mrLogger
 from time import sleep
 
 # LISTENER FUNCTIONS

@@ -6,7 +6,7 @@ Created on 11.09.2013
 import socket
 from select import select
 from thread import start_new_thread
-from src.mrLib.networking.mrProtocol import mrProtocolData
+from mrProtocol import mrProtocolData
 from mrProtocol import PROTOCOL_ENCODING, createFromDataPackage
 import DataPackage
 
