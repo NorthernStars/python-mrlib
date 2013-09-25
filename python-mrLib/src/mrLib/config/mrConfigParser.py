@@ -5,8 +5,6 @@ Created on 11.09.2013
 '''
 from ConfigParser import ConfigParser
 from os.path import isfile
-from exceptions import IOError
-import os
 
 class mrConfigParser(object):
     '''

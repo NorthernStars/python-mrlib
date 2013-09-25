@@ -142,47 +142,55 @@ class mrSocketManager(object):
         Function to handle onClientAddedListener
         '''
         for listener in self.__onClientAdded:
-            listener(clientData)
+            if listener[1] == None:
+                listener[0](clientData)
+            else:
+                listener[0](listener[1], clientData)
             
     def __onDataRecievedListener(self, datapackage):
         '''
         Function to handle onDataRecievedListener
         '''
         for listener in self.__onDataRecieved:
-            listener(self, datapackage)
+            if listener[1] == None:
+                listener[0](self, datapackage)
+            else:
+                listener[0](listener[1], self, datapackage)
             
-    def addOnClientAddedListener(self, listener):
+    def addOnClientAddedListener(self, listener=None, obj=None):
         '''
         Sets onClientAdded listener
         @param listener: Listener function.
+        @param obj: Object to pass as first argument to listener (for in class functions)
         Arguments of listener function is a tuple of
         socket and client address data (sock, (host, port)).
         '''
         if listener not in self.__onClientAdded:
-            self.__onClientAdded.append( listener )
+            self.__onClientAdded.append( [listener, obj] )
         
-    def addOnDataRecievedListener(self, listener):
+    def addOnDataRecievedListener(self, listener=None, obj=None):
         '''
         Sets onDataRecieved listener
         @param listener: Listener function
+        @param obj: Object to pass as first argument to listener (for in class functions)
         Argument of listener function is the mrSocketManager
         that recieved new data and the datapackage.
         '''
         if listener not in self.__onDataRecieved:
-            self.__onDataRecieved.append( listener )
+            self.__onDataRecieved.append( [listener, obj] )
         
-    def removeOnClientAddedListener(self, listener ):
+    def removeOnClientAddedListener(self, listener=None, obj=None ):
         '''
         Removes onClientAdded listener
         '''
-        self.__onClientAdded.remove( listener )
+        self.__onClientAdded.remove( [listener, obj] )
         
-    def removeOnDataRecievedListener(self, listener):
+    def removeOnDataRecievedListener(self, listener=None, obj=None):
         '''
         Removes onDataRecieved listener
         @param listener: Listener to remove
         '''
-        self.__onDataRecieved.remove( listener )
+        self.__onDataRecieved.remove( [listener, obj] )
     
     def stopSocket(self):
         '''

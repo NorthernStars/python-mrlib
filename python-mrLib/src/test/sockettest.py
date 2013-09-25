@@ -88,6 +88,7 @@ if __name__ == '__main__':
     while server.hasNextData():
         mrLogger.log( "Server Recv: " + str(server.getFirstData()), mrLogger.LOG_LEVEL['debug'] )
     
+    server.removeOnClientAddedListener(onClientAddedListener)
     
     mrLogger.log( "sockettest finished" )
     print "test finished"
