@@ -4,13 +4,17 @@ Created on 11.09.2013
 @author: hannes
 '''
 import socket
+
 from select import select
 from thread import start_new_thread
+
 from mrProtocol import mrProtocolData
 from mrProtocol import PROTOCOL_ENCODING, createFromDataPackage
+from mrNetworkListener import mrNetworkListener
+
 import DataPackage
 
-class mrSocketManager(object):
+class mrSocketManager(mrNetworkListener):
     '''
     Class for managing a socket connection
     '''
@@ -23,8 +27,8 @@ class mrSocketManager(object):
     __dataBuffer = []
     __connected = False
     __server = False
-    __onClientAdded = []
-    __onDataRecieved = []
+    __onClientAddedList = []
+    __onDataRecievedList = []
     
     __recieveBufferSize = 4096
     
@@ -36,14 +40,16 @@ class mrSocketManager(object):
         @param port: Port number to use for socket connection. Default is 9090.
         @param server: Set True to start a server, if False or omitted a client socket is initiated.
         '''
+        super(mrSocketManager, self).__init__()
+        
         self.__host = host
         self.__port = port
         self.__server = server
         self.__socket = None
         self.__dataBuffer = []
         self.__connected = False
-        self.__onClientAdded = []
-        self.__onDataRecieved = []
+        self.__onClientAddedList = []
+        self.__onDataRecievedList = []
         
         if server:
             start_new_thread( self.__startServerSocket, () )
@@ -80,7 +86,7 @@ class mrSocketManager(object):
                     # new connection
                     sockdata = self.__socket.accept()
                     self.__connectedClients.append( sockdata[0] )
-                    self.__onClientAddedListener(sockdata)
+                    self._processOnClientAddedListener(sockdata)
                     
                 else:
                     # recieved data
@@ -90,7 +96,7 @@ class mrSocketManager(object):
                         if data:
                             datapackage = DataPackage.CreateFromDocument(data)
                             self.__addDatapackage( datapackage )
-                            self.__onDataRecievedListener(datapackage)
+                            self._processOnDataRecievedListener(datapackage)
                     except:
                         # socket offline
                         sock.close()
@@ -120,7 +126,7 @@ class mrSocketManager(object):
             if data:
                 datapackage = DataPackage.CreateFromDocument(data)
                 self.__addDatapackage( datapackage )
-                self.__onDataRecievedListener(datapackage)
+                self._processOnDataRecievedListener( createFromDataPackage(datapackage) )
             
         # close socket
         self.__connected = False
@@ -137,60 +143,7 @@ class mrSocketManager(object):
         except:
             pass
         
-    def __onClientAddedListener(self, clientData):
-        '''
-        Function to handle onClientAddedListener
-        '''
-        for listener in self.__onClientAdded:
-            if listener[1] == None:
-                listener[0](clientData)
-            else:
-                listener[0](listener[1], clientData)
-            
-    def __onDataRecievedListener(self, datapackage):
-        '''
-        Function to handle onDataRecievedListener
-        '''
-        for listener in self.__onDataRecieved:
-            if listener[1] == None:
-                listener[0](self, datapackage)
-            else:
-                listener[0](listener[1], self, datapackage)
-            
-    def addOnClientAddedListener(self, listener=None, obj=None):
-        '''
-        Sets onClientAdded listener
-        @param listener: Listener function.
-        @param obj: Object to pass as first argument to listener (for in class functions)
-        Arguments of listener function is a tuple of
-        socket and client address data (sock, (host, port)).
-        '''
-        if listener not in self.__onClientAdded:
-            self.__onClientAdded.append( [listener, obj] )
-        
-    def addOnDataRecievedListener(self, listener=None, obj=None):
-        '''
-        Sets onDataRecieved listener
-        @param listener: Listener function
-        @param obj: Object to pass as first argument to listener (for in class functions)
-        Argument of listener function is the mrSocketManager
-        that recieved new data and the datapackage.
-        '''
-        if listener not in self.__onDataRecieved:
-            self.__onDataRecieved.append( [listener, obj] )
-        
-    def removeOnClientAddedListener(self, listener=None, obj=None ):
-        '''
-        Removes onClientAdded listener
-        '''
-        self.__onClientAdded.remove( [listener, obj] )
-        
-    def removeOnDataRecievedListener(self, listener=None, obj=None):
-        '''
-        Removes onDataRecieved listener
-        @param listener: Listener to remove
-        '''
-        self.__onDataRecieved.remove( [listener, obj] )
+   
     
     def stopSocket(self):
         '''
@@ -252,7 +205,7 @@ class mrSocketManager(object):
         Pushed data package into recieve buffer
         '''
         self.__addDatapackage( dataPackage )
-        self.__onDataRecievedListener( dataPackage )
+        self._processOnDataRecievedListener( dataPackage )
             
     def isConnected(self):
         '''

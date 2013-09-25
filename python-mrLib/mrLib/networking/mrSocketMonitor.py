@@ -12,18 +12,17 @@ class mrSocketMonitor(object):
     '''
     __manager = mrSocketManager()
     __dataBuffer = []
-    __record = True
+    __record = False
+    __replay = False
     __startTime = 0.0
 
-    def __init__(self, socketManager, record=True):
+    def __init__(self, socketManager):
         '''
         Constructor
         @param socketManager: SocketManager to 
         '''
         self.__manager = mrSocketManager()
         self.__manager = socketManager
-        self.__record = record
-        self.__startTime = time()
         self.clearDataBuffer()
         self.__manager.addOnDataRecievedListener( self.__onDataRecievedListener )
     
@@ -34,17 +33,30 @@ class mrSocketMonitor(object):
         if self.__record:
             self.__dataBuffer.append( data )
     
+    def startRecord(self):
+        '''
+        Starts recording
+        '''
+        self.__record = True
+        self.__startTime = time()
+        
+    def stopRecord(self):
+        '''
+        Stops recording
+        '''
+        self.__record = False
+    
     def startReplay(self):
         '''
         Starts replay mode
         '''
-        self.__record = False
+        self.__replay = False
     
     def stopReplay(self):
         '''
         Stops replay mode
         '''
-        self.__record = True
+        self.__replay = True
         
     def getDataBuffer(self):
         '''
@@ -69,7 +81,7 @@ class mrSocketMonitor(object):
         Updates timestamp of replay mode
         and pushes data to socket manager
         '''
-        if not self.__record:
+        if not self.__replay:
             for data in self.__dataBuffer:
                 # check if to send data
                 if (data.timestamp - self.__startTime) <= timestamp: 

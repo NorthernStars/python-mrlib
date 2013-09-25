@@ -40,6 +40,7 @@ if __name__ == '__main__':
     
     # enable socket monitor
     monitor = mrSocketMonitor( server )
+    monitor.startRecord()
     
     # create clients
     client1 = mrSocketManager()   
@@ -79,6 +80,7 @@ if __name__ == '__main__':
         
         
     # replay monitored data
+    monitor.stopRecord()
     monitor.startReplay()
     timestamp = 0.0
     while monitor.getBufferSize() > 0:
