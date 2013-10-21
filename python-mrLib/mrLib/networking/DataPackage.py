@@ -13,7 +13,7 @@ import pyxb.utils.domutils
 _GenerationUID = pyxb.utils.utility.UniqueIdentifier('urn:uuid:f6592176-1b8b-11e3-b1a3-00e0429c03e4')
 
 # Version of PyXB used to generate the bindings
-_PyXBVersion = '1.2.2'
+_PyXBVersion = '1.2.3'
 # Generated bindings are not compatible across PyXB versions
 if pyxb.__version__ != _PyXBVersion:
     raise pyxb.PyXBVersionError(_PyXBVersion)
