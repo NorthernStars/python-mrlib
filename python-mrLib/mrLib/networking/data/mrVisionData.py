@@ -33,8 +33,9 @@ class mrVisionObject():
     __angle = 0.0
     __radius = 0.0
     __size = (0,0)          # (w,h)
+    __color = (0,0,0,1)
     
-    def __init__( self, objType=None, objID=None, name="None", location=(0,0), angle=0.0, radius=0.0, size=(0,0) ):
+    def __init__( self, objType=None, objID=None, name="None", location=(0,0), angle=0.0, radius=0.0, size=(0,0), color=(0,0,0,1) ):
         '''
         Constructor
         @param objType: Type of object
@@ -44,6 +45,7 @@ class mrVisionObject():
         @param angle: Angle in degree of objects view direction
         @param radius: Radius of object
         @param size: Tuple of (w,h) width and height of the object
+        @param color: RGBA color of object
         '''        
         self.__type = objType
         self.__id = objID
@@ -52,6 +54,7 @@ class mrVisionObject():
         self.__angle = angle
         self.__radius = radius
         self.__size = size
+        self.__color = color
         
     def getType(self):
         return self.__type
