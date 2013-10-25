@@ -20,10 +20,25 @@ VISION_STREAMING_MODES = [VISION_MODE_STREAM_ALL,
 
 VISION_OBJ_BOT = "VISION_OBJ_BOT"
 VISION_OBJ_RECT = "VISION_OBJ_RECT"
+VISION_OBJ_LINE = "VISION_OBJ_LINE"
+VISION_OBJ_CIRCLE = "VISION_OBJ_CIRCLE"
+VISION_OBJ_DOT = "VISION_OBJ_DOT"
 
 class mrVisionObject():
     '''
     Class for vision objects
+    
+    type:        Defines type of object
+    id:          Unique ID of object
+    name:        Name of object (could be any string)
+    location:    Center position (x,y) of object for bot,
+                 rectangle circle and dot or first point
+                 of line
+    angle:       View angle of bot object
+    radius:      Radius of circle/dot or width of line
+    size:        Size (w,h) of rectangle and bot or
+                 second point (x,y) of line
+    color:       Color of object
     '''
     
     __type = None
