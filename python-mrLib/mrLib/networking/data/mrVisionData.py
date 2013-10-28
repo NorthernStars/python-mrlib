@@ -25,6 +25,26 @@ VISION_OBJ_CIRCLE = "VISION_OBJ_CIRCLE"
 VISION_OBJ_DOT = "VISION_OBJ_DOT"
 VISION_OBJ_TEXT = "VISION_OBJ_TEXT"
 
+class mrGraphicsDataPackage():
+    '''
+    Class for transmitting vision data to graphics module
+    szenario:     Name of szenario to use
+    visionObjs:  List of mrVisionObjects
+    '''
+    __szenario = "DefaultSzenario"
+    __visionObjs = [] 
+    
+
+class mrVisionDataPackage():
+    '''
+    Class for transmitting vision data
+    mode:        Mode of vision module (or mode to set)
+    visionObjs:  List of mrVisionObjects
+    '''
+    __mode = VISION_MODE_NONE
+    __visionObjs = []
+    
+
 class mrVisionObject():
     '''
     Class for vision objects
