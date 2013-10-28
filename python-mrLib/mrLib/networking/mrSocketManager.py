@@ -3,16 +3,13 @@ Created on 11.09.2013
 
 @author: hannes
 '''
-import socket
+from socket import socket, AF_INET, SOCK_STREAM, SOCK_DGRAM, SO_REUSEADDR, SOL_SOCKET
 
 from select import select
 from thread import start_new_thread
+from copy import copy
 
-from mrProtocol import mrProtocolData
-from mrProtocol import PROTOCOL_ENCODING, createFromDataPackage
 from mrNetworkListener import mrNetworkListener
-
-import DataPackage
 
 class mrSocketManager(mrNetworkListener):
     '''
@@ -22,23 +19,25 @@ class mrSocketManager(mrNetworkListener):
     __host = "127.0.0.1"
     __port = 9090
     __connectedClients = []
-    __socket = socket.socket()
+    __socket = socket()
     __stopSocket = False
     __dataBuffer = []
     __connected = False
     __server = False
     __onClientAddedList = []
     __onDataRecievedList = []
+    __udpOn = False
     
     __recieveBufferSize = 4096
     
 
-    def __init__(self, host="127.0.0.1", port=9090, server=False):
+    def __init__(self, host="127.0.0.1", port=9090, server=False, udpOn=False):
         '''
         Constructor
         @param host: Hostname or IP to create socket for. If omitted localhost is taken.
         @param port: Port number to use for socket connection. Default is 9090.
         @param server: Set True to start a server, if False or omitted a client socket is initiated.
+        @param udpOn: If True udp socket is created
         '''
         super(mrSocketManager, self).__init__()
         
@@ -50,6 +49,8 @@ class mrSocketManager(mrNetworkListener):
         self.__connected = False
         self.__onClientAddedList = []
         self.__onDataRecievedList = []
+        self.__connectedClients = []
+        self.__udpOn = udpOn
         
         if server:
             start_new_thread( self.__startServerSocket, () )
@@ -62,27 +63,41 @@ class mrSocketManager(mrNetworkListener):
         '''
         # initiate socket
         self.__stopSocket = False
-        self.__socket = socket.socket( socket.AF_INET, socket.SOCK_STREAM )
-        self.__socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        if not self.__udpOn:
+            # TCP socket
+            self.__socket = socket( AF_INET, SOCK_STREAM )            
+        else:
+            # UDP socket
+            self.__socket = socket( AF_INET, SOCK_DGRAM )
+            
+        self.__socket.setsockopt( SOL_SOCKET, SO_REUSEADDR, 1 )
+            
+            
         try:
             self.__socket.bind( (self.__host, self.__port) )
-            self.__socket.listen(1)
-            self.__connected = True
+            
+            if not self.__udpOn:
+                self.__socket.listen(1)
+                              
+            self.__connected = True            
         except:
             return
         
         self.__connectedClients.append( self.__socket )
-        sock = socket.socket()
         
+        sock = socket()
         while not self.__stopSocket:
             # get list of sockets
-            read_sockets = select( self.__connectedClients, [], [] )
-            read_sockets = read_sockets[0]
+            if not self.__udpOn:
+                read_sockets = select( self.__connectedClients, [], [] )
+                read_sockets = read_sockets[0]
+            else:
+                read_sockets = self.__connectedClients
             
-            # check al read ready sockets
+            # check all read ready sockets
             for sock in read_sockets:
                 
-                if sock == self.__socket:
+                if sock == self.__socket and not self.__udpOn:
                     # new connection
                     sockdata = self.__socket.accept()
                     self.__connectedClients.append( sockdata[0] )
@@ -92,11 +107,19 @@ class mrSocketManager(mrNetworkListener):
                     # recieved data
                     try:
                         # read data and append to data buffer
-                        data = sock.recv( self.__recieveBufferSize )
+                        if not self.__udpOn:
+                            data, addr = sock.recvfrom( self.__recieveBufferSize )
+                        else:
+                            data, addr = self.__socket.recvfrom( self.__recieveBufferSize )
+                            
+                        # spread data                 
                         if data:
-                            datapackage = DataPackage.CreateFromDocument(data)
-                            self.__addDatapackage( datapackage )
-                            self._processOnDataRecievedListener(datapackage)
+                            self.__addDatapackage( data )
+                            self._processOnDataRecievedListener( data )
+                            
+                            # add remote side to connected clients
+                            if self.__udpOn and addr not in self.__connectedClients:
+                                self.__connectedClients.append(addr)
                     except:
                         # socket offline
                         sock.close()
@@ -113,7 +136,13 @@ class mrSocketManager(mrNetworkListener):
         Starts client socket
         '''
         # initiate socket
-        self.__socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        if not self.__udpOn:
+            # TCP SOCKET
+            self.__socket = socket(AF_INET, SOCK_STREAM)
+        else:
+            # UDP Socket
+            self.__socket = socket(AF_INET, SOCK_DGRAM)
+            
         try:
             self.__socket.connect( (self.__host, self.__port) )
             self.__connected = True
@@ -122,11 +151,13 @@ class mrSocketManager(mrNetworkListener):
         
         while not self.__stopSocket:
             # read data and append to data buffer
-            data = self.__socket.recv( self.__recieveBufferSize )
-            if data:
-                datapackage = DataPackage.CreateFromDocument(data)
-                self.__addDatapackage( datapackage )
-                self._processOnDataRecievedListener( createFromDataPackage(datapackage) )
+            try:
+                data = self.__socket.recv( self.__recieveBufferSize )
+                if data:
+                    self.__addDatapackage( data )
+                    self._processOnDataRecievedListener( data )
+            except:
+                pass
             
         # close socket
         self.__connected = False
@@ -137,9 +168,7 @@ class mrSocketManager(mrNetworkListener):
         Adds a data package to data buffer
         '''
         try:
-            protocoldata = createFromDataPackage(datapackage)
-            if protocoldata:
-                self.__dataBuffer.append( protocoldata )
+            self.__dataBuffer.append( copy(datapackage) )
         except:
             pass
         
@@ -185,20 +214,23 @@ class mrSocketManager(mrNetworkListener):
         if not self.__server:
             # send data as client
             self.__socket.send( data )
-            
         else:
             # send data as server
-            sock = socket.socket()
+            sock = socket()            
             for sock in self.__connectedClients:
+                # TCP socket
                 if sock != self.__socket:
-                    sock.send(data)
+                    if not self.__udpOn:
+                        sock.send(data)
+                    else:
+                        self.__socket.sendto(data, sock)
     
     def sendData(self, datapackage):
         '''
         Sends a data package object
         '''   
-        if self.__connected and type(datapackage) == mrProtocolData:
-            self.__send( datapackage.toDataPackage().toxml(encoding=PROTOCOL_ENCODING) )
+        if self.__connected:
+            self.__send( datapackage )
             
     def pushRecvData(self, dataPackage):
         '''

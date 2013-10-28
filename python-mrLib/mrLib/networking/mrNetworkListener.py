@@ -35,9 +35,7 @@ class mrNetworkListener(object):
         Function to handle onDataRecievedListener
         '''
         for listener in self.__onDataRecievedList:
-            if listener == None:
-                listener(self, datapackage)
-            else:
+            if listener != None:
                 listener(self, datapackage)
             
     def addOnClientAddedListener(self, listener):

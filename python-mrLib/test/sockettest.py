@@ -5,8 +5,6 @@ Created on 11.09.2013
 '''
 
 from mrLib.networking.mrSocketManager import mrSocketManager
-from mrLib.networking.mrSocketMonitor import mrSocketMonitor
-from mrLib.networking import mrProtocol
 from mrLib.logging import mrLogger
 from time import sleep
 
@@ -27,9 +25,7 @@ if __name__ == '__main__':
     mrLogger.log( "sockettest started" )
     
     # generate data package
-    data = mrProtocol.mrProtocolData()
-    data.addDataItem("KEY1", "value1")
-    data.addDataItem("KEY1", "value2")
+    data = "DATA"
     
     # create server
     server = mrSocketManager( server=True )
@@ -38,12 +34,8 @@ if __name__ == '__main__':
     while not server.isConnected():
         pass
     
-    # enable socket monitor
-    monitor = mrSocketMonitor( server )
-    monitor.startRecord()
-    
     # create clients
-    client1 = mrSocketManager()   
+    client1 = mrSocketManager()
     client2 = mrSocketManager()
     
     # wait for clients
@@ -58,17 +50,17 @@ if __name__ == '__main__':
            
     sleep(1.0)
     
-    data.setHost("Client 1")
+    data = "Client 1"
     client1.sendData( data )
     sleep(0.5)
     mrLogger.log( "Server Recv: " + str(server.getFirstData()), mrLogger.LOG_LEVEL['debug'] )
     
-    data.setHost("Client 2")
+    data = "Client 2"
     client2.sendData( data )
     sleep(0.5)
     mrLogger.log( "Server Recv: " + str(server.getFirstData()), mrLogger.LOG_LEVEL['debug'] )
     
-    data.setHost("Server")
+    data = "Server"
     server.sendData( data )
     sleep(0.5)
     
@@ -78,17 +70,6 @@ if __name__ == '__main__':
     while client2.hasNextData():
         mrLogger.log( "Client2 Recv: " + str(client2.getFirstData()), mrLogger.LOG_LEVEL['debug'] )
         
-        
-    # replay monitored data
-    monitor.stopRecord()
-    monitor.startReplay()
-    timestamp = 0.0
-    while monitor.getBufferSize() > 0:
-        monitor.updateTimestamp(timestamp)
-        timestamp += 1000
-        
-    while server.hasNextData():
-        mrLogger.log( "Server Recv: " + str(server.getFirstData()), mrLogger.LOG_LEVEL['debug'] )
     
     server.removeOnClientAddedListener(onClientAddedListener)
     
