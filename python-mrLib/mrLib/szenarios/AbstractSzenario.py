@@ -264,8 +264,11 @@ class AbstractGraphicsSzenario(FloatLayout):
         for obj in self._guiObjs:
             if obj in self.children:
                 self.remove_widget(obj)
-            if obj in self.canvas.children:
-                self.canvas.remove(obj)
+            try:
+                if obj in self.canvas.children:
+                    self.canvas.remove(obj)
+            except:
+                pass
             obj = None
             
         self._guiObjs = {}
