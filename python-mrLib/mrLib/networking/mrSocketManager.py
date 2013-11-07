@@ -114,12 +114,12 @@ class mrSocketManager(mrNetworkListener):
                             
                         # spread data                 
                         if data:
-                            self.__addDatapackage( data )
-                            self._processOnDataRecievedListener( data )
-                            
                             # add remote side to connected clients
                             if self.__udpOn and addr not in self.__connectedClients:
                                 self.__connectedClients.append(addr)
+                             
+                            self._processOnDataRecievedListener( data )
+                            
                     except:
                         # socket offline
                         sock.close()
@@ -154,7 +154,6 @@ class mrSocketManager(mrNetworkListener):
             try:
                 data = self.__socket.recv( self.__recieveBufferSize )
                 if data:
-                    self.__addDatapackage( data )
                     self._processOnDataRecievedListener( data )
             except:
                 pass
@@ -171,8 +170,6 @@ class mrSocketManager(mrNetworkListener):
             self.__dataBuffer.append( copy(datapackage) )
         except:
             pass
-        
-   
     
     def stopSocket(self):
         '''
@@ -209,14 +206,14 @@ class mrSocketManager(mrNetworkListener):
     
     def __send(self, data):
         '''
-        Sends xml string  with socket
+        Sends string  with socket
         '''
         if not self.__server:
             # send data as client
             self.__socket.send( data )
         else:
             # send data as server
-            sock = socket()            
+            sock = socket()        
             for sock in self.__connectedClients:
                 # TCP socket
                 if sock != self.__socket:
@@ -231,6 +228,7 @@ class mrSocketManager(mrNetworkListener):
         '''   
         if self.__connected:
             self.__send( datapackage )
+
             
     def pushRecvData(self, dataPackage):
         '''
