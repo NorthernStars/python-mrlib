@@ -28,6 +28,7 @@ class mrSocketManager(mrNetworkListener):
     __onDataRecievedList = []
     __udpOn = False
     __name = "client"
+    __serverName = None
     __useHandshake = True
     __overwriteNewClients = False
     
@@ -58,6 +59,7 @@ class mrSocketManager(mrNetworkListener):
         self.__connectedClients = []
         self.__udpOn = udpOn
         self.__name = name
+        self.__serverName = None
         self.__useHandshake = useHandshake
         self.__overwriteNewClients = False
         
@@ -90,6 +92,7 @@ class mrSocketManager(mrNetworkListener):
                               
             self.__connected = True            
         except:
+            print "error!"
             return
         
         self.__connectedClients.append( self.__socket )
@@ -198,6 +201,7 @@ class mrSocketManager(mrNetworkListener):
             if dom.connectionallowed and dom.clientname == self.__name:
                 # connection established
                 self.__connected = True
+                self.__serverName = str(dom.servername)
         
                 # send established response to server
                 established = connectionEstablished()
@@ -213,7 +217,7 @@ class mrSocketManager(mrNetworkListener):
             dom = CreateFromDocument(data)
             if type(dom) == connectionRequest:
                 assert isinstance(dom, connectionRequest)
-                clientname = str(dom.clientname)
+                clientname = str(dom.clientname) 
                 
                 # check if client already there
                 if self.__overwriteNewClients or (not self.__isClientInList(clientname, addr) and not self.__isClientPending(addr) ):
@@ -248,6 +252,13 @@ class mrSocketManager(mrNetworkListener):
         reply.connectionallowed = allowed
         reply.servername = self.__name
         self.__sendto(reply.toxml("utf-8", element_name="connectionacknowlege"), addr)
+        
+    
+    def getServerName(self):
+        '''
+        @return: Name of server
+        '''
+        return self.__serverName
         
         
     def __recvData(self, sock=None):

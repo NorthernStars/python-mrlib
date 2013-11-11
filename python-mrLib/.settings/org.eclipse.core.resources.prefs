@@ -1,3 +1,4 @@
 eclipse.preferences.version=1
+encoding//mrLib/networking/data/changevisionmodedata.py=utf-8
 encoding//mrLib/networking/data/networkhandshake.py=utf-8
-encoding//mrLib/networking/data/visiondatapackage.py=utf-8
+encoding//mrLib/networking/data/positiondata.py=utf-8

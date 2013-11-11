@@ -1,48 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-  <xs:element name="visiondatapackage" type="visionDataPackage"/>
+  <xs:element name="positiondatapackage" type="positionDataPackage"/>
 
-  <xs:element name="visionobjectbot" type="visionObjectBot"/>
+  <xs:element name="positionobjectbot" type="positionObjectBot"/>
 
-  <xs:element name="visionobjectrectangle" type="visionObjectRectangle"/>
+  <xs:element name="positionobjectrectangle" type="positionObjectRectangle"/>
 
-  <xs:complexType name="visionDataPackage">
+  <xs:complexType name="positionDataPackage">
     <xs:sequence>
       <xs:element name="visionmode" type="visionMode" minOccurs="0"/>
-      <xs:element name="visionobjects" type="visionObject" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="visionobjects" type="xs:anyType" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="visionObject" abstract="true">
+  <xs:complexType name="positionObjectBot">
     <xs:sequence>
-      <xs:element name="objecttype" type="visionObjectType" minOccurs="0"/>
+      <xs:element name="objecttype" type="positionObjectType" minOccurs="0"/>
       <xs:element name="id" type="xs:int"/>
       <xs:element name="name" type="xs:string" minOccurs="0"/>
       <xs:element name="location" type="xs:double" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="color" type="xs:double" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="angle" type="xs:double"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="visionObjectBot">
-    <xs:complexContent>
-      <xs:extension base="visionObject">
-        <xs:sequence>
-          <xs:element name="angle" type="xs:double"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-
-  <xs:complexType name="visionObjectRectangle">
-    <xs:complexContent>
-      <xs:extension base="visionObject">
-        <xs:sequence>
-          <xs:element name="angle" type="xs:double"/>
-          <xs:element name="size" type="xs:double" minOccurs="0" maxOccurs="unbounded"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
+  <xs:complexType name="positionObjectRectangle">
+    <xs:sequence>
+      <xs:element name="objecttype" type="positionObjectType" minOccurs="0"/>
+      <xs:element name="id" type="xs:int"/>
+      <xs:element name="name" type="xs:string" minOccurs="0"/>
+      <xs:element name="location" type="xs:double" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="color" type="xs:double" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="angle" type="xs:double"/>
+      <xs:element name="size" type="xs:double" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
   </xs:complexType>
 
   <xs:simpleType name="visionMode">
@@ -58,7 +50,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="visionObjectType">
+  <xs:simpleType name="positionObjectType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="BOT"/>
       <xs:enumeration value="RECTANGLE"/>

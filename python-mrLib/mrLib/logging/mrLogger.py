@@ -37,6 +37,24 @@ def __getLogColor(level=LOG_LEVEL['default']):
         return str( LOG_LEVEL_COLOR[key] )
     return str( LOG_LEVEL_COLOR['default'] )
 
+def logInfo(msg=""):
+    '''
+    Logs a message as info
+    '''
+    log(msg, LOG_LEVEL["info"])
+    
+def logDebug(msg=""):
+    '''
+    Logs a message as debug
+    '''
+    log(msg, LOG_LEVEL["debug"])
+    
+def logError(msg=""):
+    '''
+    Logs a message as error
+    '''
+    log(msg, LOG_LEVEL["error"])
+
 def log(msg="", level=LOG_LEVEL["default"]):
     '''
     Logs a message

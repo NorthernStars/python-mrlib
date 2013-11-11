@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="changevisionmode" type="changeVisionMode"/>
+
+  <xs:complexType name="changeVisionMode">
+    <xs:sequence>
+      <xs:element name="visionmode" type="visionMode" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="visionMode">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="VISION_MODE_NONE"/>
+      <xs:enumeration value="VISION_MODE_STREAM_ALL"/>
+      <xs:enumeration value="VISION_MODE_STREAM_BOTS"/>
+      <xs:enumeration value="VISION_MODE_STREAM_OBJECTS"/>
+      <xs:enumeration value="VISION_MODE_STOPPED"/>
+      <xs:enumeration value="VISION_MODE_CALIBRATE_DISTANCE"/>
+      <xs:enumeration value="VISION_MODE_CALIBRATE_TRANSFORMATION"/>
+      <xs:enumeration value="VISION_MODE_TERMINATE"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+
