@@ -286,5 +286,9 @@ class AbstractGraphicsSzenario(FloatLayout):
             # draw objects
             for obj in data:
                 self._updateObj(obj)
+                
+            return True
+        
+        return False
             
             

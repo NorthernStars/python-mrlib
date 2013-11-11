@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="connectionacknowlege" type="connectionAcknowlege"/>
+
+  <xs:element name="connectionestablished" type="connectionEstablished"/>
+
+  <xs:element name="connectionrequest" type="connectionRequest"/>
+
+  <xs:complexType name="connectionAcknowlege">
+    <xs:sequence>
+      <xs:element name="servername" type="xs:string" minOccurs="0"/>
+      <xs:element name="clientname" type="xs:string" minOccurs="0"/>
+      <xs:element name="connectionallowed" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="connectionRequest">
+    <xs:sequence>
+      <xs:element name="clientname" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="connectionEstablished">
+    <xs:sequence/>
+  </xs:complexType>
+</xs:schema>
+

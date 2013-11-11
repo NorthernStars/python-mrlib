@@ -24,19 +24,18 @@ class mrNetworkListener(object):
         '''
         Function to handle onClientAddedListener
         '''
+        #print "listener", self.__onClientAddedList
         for listener in self.__onClientAddedList:
-            if listener == None:
-                listener(clientData)
-            else:
+            if listener != None:
                 listener(clientData)
             
-    def _processOnDataRecievedListener(self, datapackage):
+    def _processOnDataRecievedListener(self, addr, datapackage):
         '''
         Function to handle onDataRecievedListener
         '''
         for listener in self.__onDataRecievedList:
             if listener != None:
-                listener(self, datapackage)
+                listener(self, addr, datapackage)
             
     def addOnClientAddedListener(self, listener):
         '''

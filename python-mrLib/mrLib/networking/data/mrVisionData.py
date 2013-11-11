@@ -6,11 +6,11 @@ Created on 25.09.2013
 
 VISION_MODE_STREAM_ALL = "VISION_MODE_STREAM_ALL"
 VISION_MODE_STREAM_BOTS = "VISION_MODE_STREAM_BOTS"
-VISION_MODE_STREAM_OBJ = "VISION_MODE_STREAM_OBJ"
+VISION_MODE_STREAM_OBJ = "VISION_MODE_STREAM_OBJECTS"
 
 VISION_MODE_STOPPED = "VISION_MODE_STOPPED"
-VISION_MODE_CALIBRATE_DIST = "VISION_MODE_CALIB_DIST"
-VISION_MODE_CALIBRATE_TRANSF = "VISION_MODE_CALIB_TRANSF"
+VISION_MODE_CALIBRATE_DIST = "VISION_MODE_CALIBRATE_DISTANCE"
+VISION_MODE_CALIBRATE_TRANSF = "VISION_MODE_CALIBRATE_TRANSFORMATION"
 VISION_MODE_TERMINATE = "VISION_MODE_TERMINATE"
 VISION_MODE_NONE = "VISION_MODE_NONE"
 
@@ -18,33 +18,19 @@ VISION_STREAMING_MODES = [VISION_MODE_STREAM_ALL,
                           VISION_MODE_STREAM_BOTS,
                           VISION_MODE_STREAM_OBJ]
 
-VISION_OBJ_BOT = "VISION_OBJ_BOT"
-VISION_OBJ_RECT = "VISION_OBJ_RECT"
-VISION_OBJ_LINE = "VISION_OBJ_LINE"
-VISION_OBJ_CIRCLE = "VISION_OBJ_CIRCLE"
-VISION_OBJ_DOT = "VISION_OBJ_DOT"
-VISION_OBJ_TEXT = "VISION_OBJ_TEXT"
-VISION_OBJ_IMG = "VISION_OBJ_IMG"
+VISION_ALL_OTHER_MODES = [VISION_MODE_STOPPED,
+                    VISION_MODE_CALIBRATE_DIST,
+                    VISION_MODE_CALIBRATE_TRANSF,
+                    VISION_MODE_TERMINATE,
+                    VISION_MODE_NONE]
 
-class mrGraphicsDataPackage():
-    '''
-    Class for transmitting vision data to graphics module
-    szenario:     Name of szenario to use
-    visionObjs:  List of mrVisionObjects
-    '''
-    __szenario = "DefaultSzenario"
-    __visionObjs = [] 
-    
-
-class mrVisionDataPackage():
-    '''
-    Class for transmitting vision data
-    mode:        Mode of vision module (or mode to set)
-    visionObjs:  List of mrVisionObjects
-    '''
-    __mode = VISION_MODE_NONE
-    __visionObjs = []
-    
+VISION_OBJ_BOT = "BOT"
+VISION_OBJ_RECT = "RECTANGLE"
+VISION_OBJ_LINE = "LINE"
+VISION_OBJ_CIRCLE = "CIRCLE"
+VISION_OBJ_DOT = "DOT"
+VISION_OBJ_TEXT = "TEXT"
+VISION_OBJ_IMG = "IMAGE"
 
 class mrVisionObject():
     '''
@@ -70,7 +56,7 @@ class mrVisionObject():
     __type = None
     __id = None
     __name = "None"
-    __location = (0,0)          # (x,y)
+    __location = (0.0,0.0)          # (x,y)
     __points = []               # [x1, y1, x2, y2, ...]
     __angle = 0.0
     __radius = 0.001            # 0.0 - 1.0

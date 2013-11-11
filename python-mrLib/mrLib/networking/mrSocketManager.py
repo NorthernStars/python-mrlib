@@ -7,9 +7,9 @@ from socket import socket, AF_INET, SOCK_STREAM, SOCK_DGRAM, SO_REUSEADDR, SOL_S
 
 from select import select
 from thread import start_new_thread
-from copy import copy
 
 from mrNetworkListener import mrNetworkListener
+from mrLib.networking.data.networkhandshake import connectionRequest, connectionEstablished, connectionAcknowlege, CreateFromDocument
 
 class mrSocketManager(mrNetworkListener):
     '''
@@ -19,25 +19,31 @@ class mrSocketManager(mrNetworkListener):
     __host = "127.0.0.1"
     __port = 9090
     __connectedClients = []
+    __pendingClients = []
     __socket = socket()
     __stopSocket = False
-    __dataBuffer = []
     __connected = False
     __server = False
     __onClientAddedList = []
     __onDataRecievedList = []
     __udpOn = False
+    __name = "client"
+    __useHandshake = True
+    __overwriteNewClients = False
     
     __recieveBufferSize = 4096
     
 
-    def __init__(self, host="127.0.0.1", port=9090, server=False, udpOn=False):
+    def __init__(self, host="127.0.0.1", port=9090, server=False, udpOn=False, name="client", useHandshake=True, overwriteNewClients=False):
         '''
         Constructor
         @param host: Hostname or IP to create socket for. If omitted localhost is taken.
         @param port: Port number to use for socket connection. Default is 9090.
         @param server: Set True to start a server, if False or omitted a client socket is initiated.
         @param udpOn: If True udp socket is created
+        @param name: Name of client/server for UDP handshake
+        @param useHandshake: If true and udoOn is True, UDP handshake is used for connection
+        @param overwriteNewClients: If True new connections overwriteing connections
         '''
         super(mrSocketManager, self).__init__()
         
@@ -45,12 +51,15 @@ class mrSocketManager(mrNetworkListener):
         self.__port = port
         self.__server = server
         self.__socket = None
-        self.__dataBuffer = []
         self.__connected = False
         self.__onClientAddedList = []
+        self.__pendingClients = []
         self.__onDataRecievedList = []
         self.__connectedClients = []
         self.__udpOn = udpOn
+        self.__name = name
+        self.__useHandshake = useHandshake
+        self.__overwriteNewClients = False
         
         if server:
             start_new_thread( self.__startServerSocket, () )
@@ -107,22 +116,27 @@ class mrSocketManager(mrNetworkListener):
                     # recieved data
                     try:
                         # read data and append to data buffer
-                        if not self.__udpOn:
-                            data, addr = sock.recvfrom( self.__recieveBufferSize )
-                        else:
-                            data, addr = self.__socket.recvfrom( self.__recieveBufferSize )
+                        data, addr = self.__recvData(sock)
+                        
+                        # check for connection handshake
+                        handshake = False
+                        if self.__udpOn and self.__useHandshake:
+                            handshake = self.__handshakeServer(data, addr)                            
                             
                         # spread data                 
-                        if data:
+                        if not handshake and data:
                             # add remote side to connected clients
-                            if self.__udpOn and addr not in self.__connectedClients:
+                            if not self.__udpOn and addr != None and addr not in self.__connectedClients:
                                 self.__connectedClients.append(addr)
                              
-                            self._processOnDataRecievedListener( data )
+                            # call listener
+                            if not self.__udpOn or self.__isClientInList(self.__getClientName(addr)[0], addr):
+                                self._processOnDataRecievedListener( addr, data )
                             
                     except:
                         # socket offline
-                        sock.close()
+                        if not self.__udpOn:
+                            sock.close()
                         self.__connectedClients.remove(sock)
                         continue
         
@@ -145,31 +159,223 @@ class mrSocketManager(mrNetworkListener):
             
         try:
             self.__socket.connect( (self.__host, self.__port) )
-            self.__connected = True
         except:
             return
         
+        # check for handshake (UDP only)
+        if self.__useHandshake and self.__udpOn:
+            self.__handshakeClient()
+        else:
+            self.__connected = True
+        
         while not self.__stopSocket:
             # read data and append to data buffer
-            try:
-                data = self.__socket.recv( self.__recieveBufferSize )
-                if data:
-                    self._processOnDataRecievedListener( data )
-            except:
-                pass
+            data, addr = self.__recvData()
+            if data:
+                self._processOnDataRecievedListener( addr, data )
             
         # close socket
         self.__connected = False
         self.__socket.close()
         
-    def __addDatapackage(self, datapackage=None):
+    def __handshakeClient(self):
         '''
-        Adds a data package to data buffer
+        Connects to server using handshake
+        '''
+        # send request
+        request = connectionRequest()
+        request.clientname = str(self.__name)
+        self.__send( request.toxml("utf-8", element_name="connectionrequest") )
+        
+        # recieve response
+        data = None
+        while not data:
+            data = self.__recvData()[0]
+            
+        dom = CreateFromDocument(data)
+        if type(dom) == connectionAcknowlege:
+            assert isinstance(dom, connectionAcknowlege)
+            if dom.connectionallowed and dom.clientname == self.__name:
+                # connection established
+                self.__connected = True
+        
+                # send established response to server
+                established = connectionEstablished()
+                self.__send( established.toxml("utf-8", element_name="connectionestablished") )
+        
+        
+    def __handshakeServer(self, data, addr):
+        '''
+        Connects client and server using handshake
+        @return: True if data was handshake data 
         '''
         try:
-            self.__dataBuffer.append( copy(datapackage) )
+            dom = CreateFromDocument(data)
+            if type(dom) == connectionRequest:
+                assert isinstance(dom, connectionRequest)
+                clientname = str(dom.clientname)
+                
+                # check if client already there
+                if self.__overwriteNewClients or (not self.__isClientInList(clientname, addr) and not self.__isClientPending(addr) ):
+                    # add client
+                    self.__sendHandshakeAck(clientname, addr, True)
+                    self.__addClientPending(clientname, addr)
+                    
+                else:
+                    # refuse request
+                    self.__sendHandshakeAck(clientname, addr, False)
+                    
+                
+            elif type(dom) == connectionEstablished:
+                if self.__isClientPending(addr):
+                    clientname, addr = self.__getClientPendingName(addr)
+                    self.__addClientToList(clientname, addr)
+                    self.__removeClientPending(clientname, addr)
+                
+                
+        except:
+            return False
+        
+    def __sendHandshakeAck(self, clientname, addr, allowed=True):
+        '''
+        Send handshake ackknowledge
+        '''
+        reply = connectionAcknowlege()
+        reply.clientname = clientname
+        reply.connectionallowed = allowed
+        reply.servername = self.__name
+        self.__sendto(reply.toxml("utf-8", element_name="connectionacknowlege"), addr)
+        
+        
+    def __recvData(self, sock=None):
+        '''
+        Recieves data from remote site
+        @param sock: Socket to use (TCP and server only)
+        @return: data, addr
+        '''
+        data = None
+        addr = None
+        try:
+            if self.isConnected() and self.__server:
+                # server recieve
+                if sock != None:
+                    if not self.__udpOn:
+                        data, addr = sock.recvfrom( self.__recieveBufferSize )
+                    else:
+                        data, addr = self.__socket.recvfrom( self.__recieveBufferSize )
+            else:
+                # client recieve
+                data = self.__socket.recv( self.__recieveBufferSize )
+                addr = (self.__host, self.__port)
         except:
             pass
+        
+        return data, addr
+       
+    def __isClientInList(self, clientname, addr):
+        '''
+        Checks if client is already connected
+        @param clientname: Name of client
+        @param addr: Address of client
+        '''
+        for e in self.__connectedClients:
+            if type(e) == tuple and len(e) == 2 and type(e[1]) == tuple and len(e[1]) == 2:
+                if e[0] == clientname and e[1][0] == addr[0]:
+                    return True
+                
+        return False
+    
+    def __getClientName(self, addr):
+        '''
+        Gets name of pending client
+        @param addr: Address information of client
+        @return: Tuple (clientname, addr) of clientname and address information 
+        '''
+        clientname = None
+        for c in self.__connectedClients:
+            if type(c) == tuple and len(c) == 2:
+                if addr == c[1]:
+                    clientname = c[0]
+        return clientname, addr
+    
+    def __addClientToList(self, clientname, addr):
+        '''
+        Adds client to list of connected clients
+        @param clientname: Name of client
+        @param addr: Address information of client
+        @return: True if client added
+        '''
+        if type(clientname) == str and type(addr) == tuple and len(addr) == 2:
+            self.__connectedClients.append( (clientname, addr) )
+            self._processOnClientAddedListener( (clientname, addr) )
+            return True
+        return False
+                    
+    def __removeClientFormList(self, clientname, addr):
+        '''
+        Removes client from list of connected clients
+        @param clientname: Name of client
+        @param addr: Address information of client
+        @return: True if client was in list and is removed
+        '''
+        for e in self.__connectedClients:
+            if type(e) == tuple and len(e) == 2 and len(e[1]) == 2:
+                if e[0] == clientname and e[1][0] == addr[0]:
+                    self.__connectedClients.remove(e)
+                    return True
+        return False
+    
+    def __isClientPending(self, addr):
+        '''
+        Cheks if client is pending for auth
+        @param clientname: Name of client
+        @param addr: Address information of client
+        @return: True if client is pending
+        '''
+        if self.__getClientPendingName(addr)[0] == None:
+            return False
+        return True
+        
+    def __getClientPendingName(self, addr):
+        '''
+        Gets name of pending client
+        @param addr: Address information of client
+        @return: Tuple (clientname, addr) of clientname and address information 
+        '''
+        clientname = None
+        for c in self.__pendingClients:
+            if type(c) == tuple and len(c) == 2:
+                if addr == c[1]:
+                    clientname = c[0]
+        return clientname, addr
+    
+    
+    def __addClientPending(self, clientname, addr):
+        '''
+        Adds client to pending list
+        @param clientname: Name of client
+        @param addr: Address information of client
+        @return: True if client not already and list and added
+        '''
+        if type(clientname) == str and type(addr) == tuple and len(addr) == 2 and not self.__isClientPending(addr):
+            self.__pendingClients.append( (clientname, addr) )
+            return True
+        
+        return False
+    
+    def __removeClientPending(self, clientname, addr):
+        '''
+        Removes pending client from list
+        @param clientname: Name of client
+        @param addr: Address information of client
+        @return: Tuple (clientname, addr) of clientname and address information 
+        '''
+        try:
+            self.__pendingClients.remove( (clientname, addr) )
+        except:
+            pass
+        return (clientname, addr)
+    
     
     def stopSocket(self):
         '''
@@ -178,31 +384,6 @@ class mrSocketManager(mrNetworkListener):
         self.__stopSocket = True
         self.__socket.close()
         self.__connected = False
-    
-    def getDataBuffer(self):
-        '''
-        Returns the data package buffer
-        '''
-        return self.__dataBuffer
-    
-    def getFirstData(self):
-        '''
-        Returns first data in data buffer
-        '''
-        #print "data buffer", self.__dataBuffer.__repr__()
-        if len(self.__dataBuffer) > 0:
-            data = self.__dataBuffer[0]
-            self.__dataBuffer.remove(data)
-            return data
-        return None
-    
-    def hasNextData(self):
-        '''
-        Returns True if data buffer has more items
-        '''
-        if len(self.__dataBuffer) > 0:
-            return True
-        return False
     
     def __send(self, data):
         '''
@@ -213,14 +394,27 @@ class mrSocketManager(mrNetworkListener):
             self.__socket.send( data )
         else:
             # send data as server
-            sock = socket()        
+            sock = socket()
             for sock in self.__connectedClients:
-                # TCP socket
                 if sock != self.__socket:
-                    if not self.__udpOn:
-                        sock.send(data)
-                    else:
-                        self.__socket.sendto(data, sock)
+                    self.__sendto(data, sock)
+                        
+    def __sendto(self, data, sock):
+        '''
+        Send data so specific client
+        @param data: String data to send
+        @param sock: Socket to use. Could be a socket object for tcp connections
+        or addr or tuple (*, addr) of remote site for udp connections
+        '''
+        if self.isConnected() and type(data) == str and sock != None:
+            if self.__udpOn:
+                if len(sock) == 2 and type(sock[1]) == tuple:
+                    self.__socket.sendto(data, sock[1])
+                else:
+                    self.__socket.sendto(data, sock)
+            else:
+                sock.send(data)
+        
     
     def sendData(self, datapackage):
         '''
@@ -228,14 +422,6 @@ class mrSocketManager(mrNetworkListener):
         '''   
         if self.__connected:
             self.__send( datapackage )
-
-            
-    def pushRecvData(self, dataPackage):
-        '''
-        Pushed data package into recieve buffer
-        '''
-        self.__addDatapackage( dataPackage )
-        self._processOnDataRecievedListener( dataPackage )
             
     def isConnected(self):
         '''

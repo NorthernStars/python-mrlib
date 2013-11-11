@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="visiondatapackage" type="visionDataPackage"/>
+
+  <xs:element name="visionobjectbot" type="visionObjectBot"/>
+
+  <xs:element name="visionobjectrectangle" type="visionObjectRectangle"/>
+
+  <xs:complexType name="visionDataPackage">
+    <xs:sequence>
+      <xs:element name="visionmode" type="visionMode" minOccurs="0"/>
+      <xs:element name="visionobjects" type="visionObject" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="visionObject" abstract="true">
+    <xs:sequence>
+      <xs:element name="objecttype" type="visionObjectType" minOccurs="0"/>
+      <xs:element name="id" type="xs:int"/>
+      <xs:element name="name" type="xs:string" minOccurs="0"/>
+      <xs:element name="location" type="xs:double" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="color" type="xs:double" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="visionObjectBot">
+    <xs:complexContent>
+      <xs:extension base="visionObject">
+        <xs:sequence>
+          <xs:element name="angle" type="xs:double"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="visionObjectRectangle">
+    <xs:complexContent>
+      <xs:extension base="visionObject">
+        <xs:sequence>
+          <xs:element name="angle" type="xs:double"/>
+          <xs:element name="size" type="xs:double" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:simpleType name="visionMode">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="VISION_MODE_NONE"/>
+      <xs:enumeration value="VISION_MODE_STREAM_ALL"/>
+      <xs:enumeration value="VISION_MODE_STREAM_BOTS"/>
+      <xs:enumeration value="VISION_MODE_STREAM_OBJECTS"/>
+      <xs:enumeration value="VISION_MODE_STOPPED"/>
+      <xs:enumeration value="VISION_MODE_CALIBRATE_DISTANCE"/>
+      <xs:enumeration value="VISION_MODE_CALIBRATE_TRANSFORMATION"/>
+      <xs:enumeration value="VISION_MODE_TERMINATE"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="visionObjectType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="BOT"/>
+      <xs:enumeration value="RECTANGLE"/>
+      <xs:enumeration value="LINE"/>
+      <xs:enumeration value="CIRCLE"/>
+      <xs:enumeration value="DOT"/>
+      <xs:enumeration value="TEXT"/>
+      <xs:enumeration value="IMAGE"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+
