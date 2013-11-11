@@ -231,10 +231,13 @@ class mrSocketManager(mrNetworkListener):
                     clientname, addr = self.__getClientPendingName(addr)
                     self.__addClientToList(clientname, addr)
                     self.__removeClientPending(clientname, addr)
-                
+            else:
+                return False              
                 
         except:
             return False
+        
+        return True
         
     def __sendHandshakeAck(self, clientname, addr, allowed=True):
         '''
