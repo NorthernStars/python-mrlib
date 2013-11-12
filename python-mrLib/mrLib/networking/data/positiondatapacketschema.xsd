@@ -10,31 +10,39 @@
   <xs:complexType name="positionDataPackage">
     <xs:sequence>
       <xs:element name="visionmode" type="visionMode" minOccurs="0"/>
-      <xs:element name="visionobjects" type="xs:anyType" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="objects" type="positionObject" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="positionObject" abstract="true">
+    <xs:sequence>
+      <xs:element name="objecttype" type="positionObjectType" minOccurs="0"/>
+      <xs:element name="id" type="xs:int"/>
+      <xs:element name="name" type="xs:string" minOccurs="0"/>
+      <xs:element name="location" type="xs:double" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="color" type="xs:double" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
 
   <xs:complexType name="positionObjectBot">
-    <xs:sequence>
-      <xs:element name="objecttype" type="positionObjectType" minOccurs="0"/>
-      <xs:element name="id" type="xs:int"/>
-      <xs:element name="name" type="xs:string" minOccurs="0"/>
-      <xs:element name="location" type="xs:double" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="color" type="xs:double" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="angle" type="xs:double"/>
-    </xs:sequence>
+    <xs:complexContent>
+      <xs:extension base="positionObject">
+        <xs:sequence>
+          <xs:element name="angle" type="xs:double"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
 
   <xs:complexType name="positionObjectRectangle">
-    <xs:sequence>
-      <xs:element name="objecttype" type="positionObjectType" minOccurs="0"/>
-      <xs:element name="id" type="xs:int"/>
-      <xs:element name="name" type="xs:string" minOccurs="0"/>
-      <xs:element name="location" type="xs:double" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="color" type="xs:double" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="angle" type="xs:double"/>
-      <xs:element name="size" type="xs:double" minOccurs="0" maxOccurs="unbounded"/>
-    </xs:sequence>
+    <xs:complexContent>
+      <xs:extension base="positionObject">
+        <xs:sequence>
+          <xs:element name="angle" type="xs:double"/>
+          <xs:element name="size" type="xs:double" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
 
   <xs:simpleType name="visionMode">

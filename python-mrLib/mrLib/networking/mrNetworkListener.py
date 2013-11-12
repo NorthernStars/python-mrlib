@@ -3,6 +3,7 @@ Created on 25.09.2013
 
 @author: hannes
 '''
+from thread import start_new_thread
 
 class mrNetworkListener(object):
     '''
@@ -24,10 +25,12 @@ class mrNetworkListener(object):
         '''
         Function to handle onClientAddedListener
         '''
-        #print "listener", self.__onClientAddedList
+        print "listener", self.__onClientAddedList
+        print "clientData", clientData
         for listener in self.__onClientAddedList:
+            print "listener call", listener
             if listener != None:
-                listener(clientData)
+                start_new_thread( listener, (clientData) )
             
     def _processOnDataRecievedListener(self, addr, datapackage):
         '''

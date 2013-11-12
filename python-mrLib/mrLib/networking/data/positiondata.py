@@ -1,7 +1,7 @@
 # ./positiondata.py
 # -*- coding: utf-8 -*-
 # PyXB bindings for NM:e92452c8d3e28a9e27abfc9994d2007779e7f4c9
-# Generated 2013-11-11 15:44:55.443631 by PyXB version 1.2.3
+# Generated 2013-11-11 16:19:52.912548 by PyXB version 1.2.3
 # Namespace AbsentNamespace0
 
 import pyxb.binding.saxer
@@ -10,7 +10,7 @@ import pyxb.utils.utility
 import pyxb.utils.domutils
 
 # Unique identifier for bindings created at the same time
-_GenerationUID = pyxb.utils.utility.UniqueIdentifier('urn:uuid:d4797db6-4adf-11e3-87a8-0016e6870683')
+_GenerationUID = pyxb.utils.utility.UniqueIdentifier('urn:uuid:b6a9ea8c-4ae4-11e3-a3b4-0016e6870683')
 
 # Version of PyXB used to generate the bindings
 _PyXBVersion = '1.2.3'
@@ -74,7 +74,7 @@ class visionMode (pyxb.binding.datatypes.string, pyxb.binding.basis.enumeration_
     """An atomic simple type."""
 
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'visionMode')
-    _XSDLocation = pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 40, 2)
+    _XSDLocation = pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 48, 2)
     _Documentation = None
 visionMode._CF_enumeration = pyxb.binding.facets.CF_enumeration(value_datatype=visionMode, enum_prefix=None)
 visionMode.VISION_MODE_NONE = visionMode._CF_enumeration.addEnumeration(unicode_value=u'VISION_MODE_NONE', tag=u'VISION_MODE_NONE')
@@ -94,7 +94,7 @@ class positionObjectType (pyxb.binding.datatypes.string, pyxb.binding.basis.enum
     """An atomic simple type."""
 
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'positionObjectType')
-    _XSDLocation = pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 53, 2)
+    _XSDLocation = pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 61, 2)
     _Documentation = None
 positionObjectType._CF_enumeration = pyxb.binding.facets.CF_enumeration(value_datatype=positionObjectType, enum_prefix=None)
 positionObjectType.BOT = positionObjectType._CF_enumeration.addEnumeration(unicode_value=u'BOT', tag=u'BOT')
@@ -126,15 +126,15 @@ class positionDataPackage (pyxb.binding.basis.complexTypeDefinition):
     visionmode = property(__visionmode.value, __visionmode.set, None, None)
 
     
-    # Element visionobjects uses Python identifier visionobjects
-    __visionobjects = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'visionobjects'), 'visionobjects', '__AbsentNamespace0_positionDataPackage_visionobjects', True, pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 13, 6), )
+    # Element objects uses Python identifier objects
+    __objects = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'objects'), 'objects', '__AbsentNamespace0_positionDataPackage_objects', True, pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 13, 6), )
 
     
-    visionobjects = property(__visionobjects.value, __visionobjects.set, None, None)
+    objects = property(__objects.value, __objects.set, None, None)
 
     _ElementMap.update({
         __visionmode.name() : __visionmode,
-        __visionobjects.name() : __visionobjects
+        __objects.name() : __objects
     })
     _AttributeMap.update({
         
@@ -142,65 +142,94 @@ class positionDataPackage (pyxb.binding.basis.complexTypeDefinition):
 Namespace.addCategoryObject('typeBinding', u'positionDataPackage', positionDataPackage)
 
 
-# Complex type positionObjectBot with content type ELEMENT_ONLY
-class positionObjectBot (pyxb.binding.basis.complexTypeDefinition):
-    """Complex type positionObjectBot with content type ELEMENT_ONLY"""
+# Complex type positionObject with content type ELEMENT_ONLY
+class positionObject (pyxb.binding.basis.complexTypeDefinition):
+    """Complex type positionObject with content type ELEMENT_ONLY"""
     _TypeDefinition = None
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_ELEMENT_ONLY
-    _Abstract = False
-    _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'positionObjectBot')
+    _Abstract = True
+    _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'positionObject')
     _XSDLocation = pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 17, 2)
     _ElementMap = {}
     _AttributeMap = {}
     # Base type is pyxb.binding.datatypes.anyType
     
     # Element objecttype uses Python identifier objecttype
-    __objecttype = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'objecttype'), 'objecttype', '__AbsentNamespace0_positionObjectBot_objecttype', False, pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 19, 6), )
+    __objecttype = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'objecttype'), 'objecttype', '__AbsentNamespace0_positionObject_objecttype', False, pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 19, 6), )
 
     
     objecttype = property(__objecttype.value, __objecttype.set, None, None)
 
     
     # Element id uses Python identifier id
-    __id = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'id'), 'id', '__AbsentNamespace0_positionObjectBot_id', False, pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 20, 6), )
+    __id = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'id'), 'id', '__AbsentNamespace0_positionObject_id', False, pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 20, 6), )
 
     
     id = property(__id.value, __id.set, None, None)
 
     
     # Element name uses Python identifier name
-    __name = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'name'), 'name', '__AbsentNamespace0_positionObjectBot_name', False, pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 21, 6), )
+    __name = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'name'), 'name', '__AbsentNamespace0_positionObject_name', False, pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 21, 6), )
 
     
     name = property(__name.value, __name.set, None, None)
 
     
     # Element location uses Python identifier location
-    __location = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'location'), 'location', '__AbsentNamespace0_positionObjectBot_location', True, pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 22, 6), )
+    __location = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'location'), 'location', '__AbsentNamespace0_positionObject_location', True, pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 22, 6), )
 
     
     location = property(__location.value, __location.set, None, None)
 
     
     # Element color uses Python identifier color
-    __color = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'color'), 'color', '__AbsentNamespace0_positionObjectBot_color', True, pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 23, 6), )
+    __color = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'color'), 'color', '__AbsentNamespace0_positionObject_color', True, pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 23, 6), )
 
     
     color = property(__color.value, __color.set, None, None)
-
-    
-    # Element angle uses Python identifier angle
-    __angle = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'angle'), 'angle', '__AbsentNamespace0_positionObjectBot_angle', False, pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 24, 6), )
-
-    
-    angle = property(__angle.value, __angle.set, None, None)
 
     _ElementMap.update({
         __objecttype.name() : __objecttype,
         __id.name() : __id,
         __name.name() : __name,
         __location.name() : __location,
-        __color.name() : __color,
+        __color.name() : __color
+    })
+    _AttributeMap.update({
+        
+    })
+Namespace.addCategoryObject('typeBinding', u'positionObject', positionObject)
+
+
+# Complex type positionObjectBot with content type ELEMENT_ONLY
+class positionObjectBot (positionObject):
+    """Complex type positionObjectBot with content type ELEMENT_ONLY"""
+    _TypeDefinition = None
+    _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_ELEMENT_ONLY
+    _Abstract = False
+    _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'positionObjectBot')
+    _XSDLocation = pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 27, 2)
+    _ElementMap = positionObject._ElementMap.copy()
+    _AttributeMap = positionObject._AttributeMap.copy()
+    # Base type is positionObject
+    
+    # Element objecttype (objecttype) inherited from positionObject
+    
+    # Element id (id) inherited from positionObject
+    
+    # Element name (name) inherited from positionObject
+    
+    # Element location (location) inherited from positionObject
+    
+    # Element color (color) inherited from positionObject
+    
+    # Element angle uses Python identifier angle
+    __angle = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'angle'), 'angle', '__AbsentNamespace0_positionObjectBot_angle', False, pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 31, 10), )
+
+    
+    angle = property(__angle.value, __angle.set, None, None)
+
+    _ElementMap.update({
         __angle.name() : __angle
     })
     _AttributeMap.update({
@@ -210,71 +239,41 @@ Namespace.addCategoryObject('typeBinding', u'positionObjectBot', positionObjectB
 
 
 # Complex type positionObjectRectangle with content type ELEMENT_ONLY
-class positionObjectRectangle (pyxb.binding.basis.complexTypeDefinition):
+class positionObjectRectangle (positionObject):
     """Complex type positionObjectRectangle with content type ELEMENT_ONLY"""
     _TypeDefinition = None
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_ELEMENT_ONLY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'positionObjectRectangle')
-    _XSDLocation = pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 28, 2)
-    _ElementMap = {}
-    _AttributeMap = {}
-    # Base type is pyxb.binding.datatypes.anyType
+    _XSDLocation = pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 37, 2)
+    _ElementMap = positionObject._ElementMap.copy()
+    _AttributeMap = positionObject._AttributeMap.copy()
+    # Base type is positionObject
     
-    # Element objecttype uses Python identifier objecttype
-    __objecttype = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'objecttype'), 'objecttype', '__AbsentNamespace0_positionObjectRectangle_objecttype', False, pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 30, 6), )
-
+    # Element objecttype (objecttype) inherited from positionObject
     
-    objecttype = property(__objecttype.value, __objecttype.set, None, None)
-
+    # Element id (id) inherited from positionObject
     
-    # Element id uses Python identifier id
-    __id = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'id'), 'id', '__AbsentNamespace0_positionObjectRectangle_id', False, pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 31, 6), )
-
+    # Element name (name) inherited from positionObject
     
-    id = property(__id.value, __id.set, None, None)
-
+    # Element location (location) inherited from positionObject
     
-    # Element name uses Python identifier name
-    __name = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'name'), 'name', '__AbsentNamespace0_positionObjectRectangle_name', False, pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 32, 6), )
-
-    
-    name = property(__name.value, __name.set, None, None)
-
-    
-    # Element location uses Python identifier location
-    __location = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'location'), 'location', '__AbsentNamespace0_positionObjectRectangle_location', True, pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 33, 6), )
-
-    
-    location = property(__location.value, __location.set, None, None)
-
-    
-    # Element color uses Python identifier color
-    __color = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'color'), 'color', '__AbsentNamespace0_positionObjectRectangle_color', True, pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 34, 6), )
-
-    
-    color = property(__color.value, __color.set, None, None)
-
+    # Element color (color) inherited from positionObject
     
     # Element angle uses Python identifier angle
-    __angle = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'angle'), 'angle', '__AbsentNamespace0_positionObjectRectangle_angle', False, pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 35, 6), )
+    __angle = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'angle'), 'angle', '__AbsentNamespace0_positionObjectRectangle_angle', False, pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 41, 10), )
 
     
     angle = property(__angle.value, __angle.set, None, None)
 
     
     # Element size uses Python identifier size
-    __size = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'size'), 'size', '__AbsentNamespace0_positionObjectRectangle_size', True, pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 36, 6), )
+    __size = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'size'), 'size', '__AbsentNamespace0_positionObjectRectangle_size', True, pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 42, 10), )
 
     
     size = property(__size.value, __size.set, None, None)
 
     _ElementMap.update({
-        __objecttype.name() : __objecttype,
-        __id.name() : __id,
-        __name.name() : __name,
-        __location.name() : __location,
-        __color.name() : __color,
         __angle.name() : __angle,
         __size.name() : __size
     })
@@ -297,7 +296,7 @@ Namespace.addCategoryObject('elementBinding', positionobjectrectangle.name().loc
 
 positionDataPackage._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'visionmode'), visionMode, scope=positionDataPackage, location=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 12, 6)))
 
-positionDataPackage._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'visionobjects'), pyxb.binding.datatypes.anyType, scope=positionDataPackage, location=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 13, 6)))
+positionDataPackage._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'objects'), positionObject, scope=positionDataPackage, location=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 13, 6)))
 
 def _BuildAutomaton ():
     # Remove this helper function from the namespace after it is invoked
@@ -318,7 +317,7 @@ def _BuildAutomaton ():
     states.append(st_0)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_1, False))
-    symbol = pyxb.binding.content.ElementUse(positionDataPackage._UseForTag(pyxb.namespace.ExpandedName(None, u'visionobjects')), pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 13, 6))
+    symbol = pyxb.binding.content.ElementUse(positionDataPackage._UseForTag(pyxb.namespace.ExpandedName(None, u'objects')), pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 13, 6))
     st_1 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_1)
     transitions = []
@@ -337,22 +336,99 @@ positionDataPackage._Automaton = _BuildAutomaton()
 
 
 
-positionObjectBot._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'objecttype'), positionObjectType, scope=positionObjectBot, location=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 19, 6)))
+positionObject._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'objecttype'), positionObjectType, scope=positionObject, location=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 19, 6)))
 
-positionObjectBot._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'id'), pyxb.binding.datatypes.int, scope=positionObjectBot, location=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 20, 6)))
+positionObject._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'id'), pyxb.binding.datatypes.int, scope=positionObject, location=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 20, 6)))
 
-positionObjectBot._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'name'), pyxb.binding.datatypes.string, scope=positionObjectBot, location=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 21, 6)))
+positionObject._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'name'), pyxb.binding.datatypes.string, scope=positionObject, location=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 21, 6)))
 
-positionObjectBot._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'location'), pyxb.binding.datatypes.double, scope=positionObjectBot, location=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 22, 6)))
+positionObject._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'location'), pyxb.binding.datatypes.double, scope=positionObject, location=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 22, 6)))
 
-positionObjectBot._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'color'), pyxb.binding.datatypes.double, scope=positionObjectBot, location=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 23, 6)))
-
-positionObjectBot._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'angle'), pyxb.binding.datatypes.double, scope=positionObjectBot, location=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 24, 6)))
+positionObject._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'color'), pyxb.binding.datatypes.double, scope=positionObject, location=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 23, 6)))
 
 def _BuildAutomaton_ ():
     # Remove this helper function from the namespace after it is invoked
     global _BuildAutomaton_
     del _BuildAutomaton_
+    import pyxb.utils.fac as fac
+
+    counters = set()
+    cc_0 = fac.CounterCondition(min=0L, max=1, metadata=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 19, 6))
+    counters.add(cc_0)
+    cc_1 = fac.CounterCondition(min=0L, max=1, metadata=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 21, 6))
+    counters.add(cc_1)
+    cc_2 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 22, 6))
+    counters.add(cc_2)
+    cc_3 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 23, 6))
+    counters.add(cc_3)
+    states = []
+    final_update = None
+    symbol = pyxb.binding.content.ElementUse(positionObject._UseForTag(pyxb.namespace.ExpandedName(None, u'objecttype')), pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 19, 6))
+    st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_0)
+    final_update = set()
+    symbol = pyxb.binding.content.ElementUse(positionObject._UseForTag(pyxb.namespace.ExpandedName(None, u'id')), pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 20, 6))
+    st_1 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_1)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_1, False))
+    symbol = pyxb.binding.content.ElementUse(positionObject._UseForTag(pyxb.namespace.ExpandedName(None, u'name')), pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 21, 6))
+    st_2 = fac.State(symbol, is_initial=False, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_2)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_2, False))
+    symbol = pyxb.binding.content.ElementUse(positionObject._UseForTag(pyxb.namespace.ExpandedName(None, u'location')), pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 22, 6))
+    st_3 = fac.State(symbol, is_initial=False, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_3)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_3, False))
+    symbol = pyxb.binding.content.ElementUse(positionObject._UseForTag(pyxb.namespace.ExpandedName(None, u'color')), pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 23, 6))
+    st_4 = fac.State(symbol, is_initial=False, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_4)
+    transitions = []
+    transitions.append(fac.Transition(st_0, [
+        fac.UpdateInstruction(cc_0, True) ]))
+    transitions.append(fac.Transition(st_1, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    st_0._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_2, [
+         ]))
+    transitions.append(fac.Transition(st_3, [
+         ]))
+    transitions.append(fac.Transition(st_4, [
+         ]))
+    st_1._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_2, [
+        fac.UpdateInstruction(cc_1, True) ]))
+    transitions.append(fac.Transition(st_3, [
+        fac.UpdateInstruction(cc_1, False) ]))
+    transitions.append(fac.Transition(st_4, [
+        fac.UpdateInstruction(cc_1, False) ]))
+    st_2._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_3, [
+        fac.UpdateInstruction(cc_2, True) ]))
+    transitions.append(fac.Transition(st_4, [
+        fac.UpdateInstruction(cc_2, False) ]))
+    st_3._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_4, [
+        fac.UpdateInstruction(cc_3, True) ]))
+    st_4._set_transitionSet(transitions)
+    return fac.Automaton(states, counters, False, containing_state=None)
+positionObject._Automaton = _BuildAutomaton_()
+
+
+
+
+positionObjectBot._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'angle'), pyxb.binding.datatypes.double, scope=positionObjectBot, location=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 31, 10)))
+
+def _BuildAutomaton_2 ():
+    # Remove this helper function from the namespace after it is invoked
+    global _BuildAutomaton_2
+    del _BuildAutomaton_2
     import pyxb.utils.fac as fac
 
     counters = set()
@@ -386,7 +462,7 @@ def _BuildAutomaton_ ():
     st_4 = fac.State(symbol, is_initial=False, final_update=final_update, is_unordered_catenation=False)
     states.append(st_4)
     final_update = set()
-    symbol = pyxb.binding.content.ElementUse(positionObjectBot._UseForTag(pyxb.namespace.ExpandedName(None, u'angle')), pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 24, 6))
+    symbol = pyxb.binding.content.ElementUse(positionObjectBot._UseForTag(pyxb.namespace.ExpandedName(None, u'angle')), pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 31, 10))
     st_5 = fac.State(symbol, is_initial=False, final_update=final_update, is_unordered_catenation=False)
     states.append(st_5)
     transitions = []
@@ -432,70 +508,60 @@ def _BuildAutomaton_ ():
     transitions = []
     st_5._set_transitionSet(transitions)
     return fac.Automaton(states, counters, False, containing_state=None)
-positionObjectBot._Automaton = _BuildAutomaton_()
+positionObjectBot._Automaton = _BuildAutomaton_2()
 
 
 
 
-positionObjectRectangle._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'objecttype'), positionObjectType, scope=positionObjectRectangle, location=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 30, 6)))
+positionObjectRectangle._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'angle'), pyxb.binding.datatypes.double, scope=positionObjectRectangle, location=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 41, 10)))
 
-positionObjectRectangle._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'id'), pyxb.binding.datatypes.int, scope=positionObjectRectangle, location=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 31, 6)))
+positionObjectRectangle._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'size'), pyxb.binding.datatypes.double, scope=positionObjectRectangle, location=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 42, 10)))
 
-positionObjectRectangle._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'name'), pyxb.binding.datatypes.string, scope=positionObjectRectangle, location=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 32, 6)))
-
-positionObjectRectangle._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'location'), pyxb.binding.datatypes.double, scope=positionObjectRectangle, location=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 33, 6)))
-
-positionObjectRectangle._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'color'), pyxb.binding.datatypes.double, scope=positionObjectRectangle, location=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 34, 6)))
-
-positionObjectRectangle._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'angle'), pyxb.binding.datatypes.double, scope=positionObjectRectangle, location=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 35, 6)))
-
-positionObjectRectangle._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'size'), pyxb.binding.datatypes.double, scope=positionObjectRectangle, location=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 36, 6)))
-
-def _BuildAutomaton_2 ():
+def _BuildAutomaton_3 ():
     # Remove this helper function from the namespace after it is invoked
-    global _BuildAutomaton_2
-    del _BuildAutomaton_2
+    global _BuildAutomaton_3
+    del _BuildAutomaton_3
     import pyxb.utils.fac as fac
 
     counters = set()
-    cc_0 = fac.CounterCondition(min=0L, max=1, metadata=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 30, 6))
+    cc_0 = fac.CounterCondition(min=0L, max=1, metadata=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 19, 6))
     counters.add(cc_0)
-    cc_1 = fac.CounterCondition(min=0L, max=1, metadata=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 32, 6))
+    cc_1 = fac.CounterCondition(min=0L, max=1, metadata=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 21, 6))
     counters.add(cc_1)
-    cc_2 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 33, 6))
+    cc_2 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 22, 6))
     counters.add(cc_2)
-    cc_3 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 34, 6))
+    cc_3 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 23, 6))
     counters.add(cc_3)
-    cc_4 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 36, 6))
+    cc_4 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 42, 10))
     counters.add(cc_4)
     states = []
     final_update = None
-    symbol = pyxb.binding.content.ElementUse(positionObjectRectangle._UseForTag(pyxb.namespace.ExpandedName(None, u'objecttype')), pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 30, 6))
+    symbol = pyxb.binding.content.ElementUse(positionObjectRectangle._UseForTag(pyxb.namespace.ExpandedName(None, u'objecttype')), pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 19, 6))
     st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_0)
     final_update = None
-    symbol = pyxb.binding.content.ElementUse(positionObjectRectangle._UseForTag(pyxb.namespace.ExpandedName(None, u'id')), pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 31, 6))
+    symbol = pyxb.binding.content.ElementUse(positionObjectRectangle._UseForTag(pyxb.namespace.ExpandedName(None, u'id')), pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 20, 6))
     st_1 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_1)
     final_update = None
-    symbol = pyxb.binding.content.ElementUse(positionObjectRectangle._UseForTag(pyxb.namespace.ExpandedName(None, u'name')), pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 32, 6))
+    symbol = pyxb.binding.content.ElementUse(positionObjectRectangle._UseForTag(pyxb.namespace.ExpandedName(None, u'name')), pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 21, 6))
     st_2 = fac.State(symbol, is_initial=False, final_update=final_update, is_unordered_catenation=False)
     states.append(st_2)
     final_update = None
-    symbol = pyxb.binding.content.ElementUse(positionObjectRectangle._UseForTag(pyxb.namespace.ExpandedName(None, u'location')), pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 33, 6))
+    symbol = pyxb.binding.content.ElementUse(positionObjectRectangle._UseForTag(pyxb.namespace.ExpandedName(None, u'location')), pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 22, 6))
     st_3 = fac.State(symbol, is_initial=False, final_update=final_update, is_unordered_catenation=False)
     states.append(st_3)
     final_update = None
-    symbol = pyxb.binding.content.ElementUse(positionObjectRectangle._UseForTag(pyxb.namespace.ExpandedName(None, u'color')), pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 34, 6))
+    symbol = pyxb.binding.content.ElementUse(positionObjectRectangle._UseForTag(pyxb.namespace.ExpandedName(None, u'color')), pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 23, 6))
     st_4 = fac.State(symbol, is_initial=False, final_update=final_update, is_unordered_catenation=False)
     states.append(st_4)
     final_update = set()
-    symbol = pyxb.binding.content.ElementUse(positionObjectRectangle._UseForTag(pyxb.namespace.ExpandedName(None, u'angle')), pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 35, 6))
+    symbol = pyxb.binding.content.ElementUse(positionObjectRectangle._UseForTag(pyxb.namespace.ExpandedName(None, u'angle')), pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 41, 10))
     st_5 = fac.State(symbol, is_initial=False, final_update=final_update, is_unordered_catenation=False)
     states.append(st_5)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_4, False))
-    symbol = pyxb.binding.content.ElementUse(positionObjectRectangle._UseForTag(pyxb.namespace.ExpandedName(None, u'size')), pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 36, 6))
+    symbol = pyxb.binding.content.ElementUse(positionObjectRectangle._UseForTag(pyxb.namespace.ExpandedName(None, u'size')), pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/positiondatapacketschema.xsd', 42, 10))
     st_6 = fac.State(symbol, is_initial=False, final_update=final_update, is_unordered_catenation=False)
     states.append(st_6)
     transitions = []
@@ -547,5 +613,5 @@ def _BuildAutomaton_2 ():
         fac.UpdateInstruction(cc_4, True) ]))
     st_6._set_transitionSet(transitions)
     return fac.Automaton(states, counters, False, containing_state=None)
-positionObjectRectangle._Automaton = _BuildAutomaton_2()
+positionObjectRectangle._Automaton = _BuildAutomaton_3()
 

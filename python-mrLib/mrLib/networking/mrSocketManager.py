@@ -92,7 +92,7 @@ class mrSocketManager(mrNetworkListener):
                               
             self.__connected = True            
         except:
-            print "error!"
+            print "connection error!"
             return
         
         self.__connectedClients.append( self.__socket )
@@ -126,7 +126,7 @@ class mrSocketManager(mrNetworkListener):
                         if self.__udpOn and self.__useHandshake:
                             handshake = self.__handshakeServer(data, addr)                            
                             
-                        # spread data                 
+                        # spread data               
                         if not handshake and data:
                             # add remote side to connected clients
                             if not self.__udpOn and addr != None and addr not in self.__connectedClients:
@@ -228,19 +228,20 @@ class mrSocketManager(mrNetworkListener):
                 else:
                     # refuse request
                     self.__sendHandshakeAck(clientname, addr, False)
-                    
                 
             elif type(dom) == connectionEstablished:
                 if self.__isClientPending(addr):
                     clientname, addr = self.__getClientPendingName(addr)
-                    self.__addClientToList(clientname, addr)
                     self.__removeClientPending(clientname, addr)
+                    self.__addClientToList(clientname, addr)
+                          
             else:
-                return False              
+                return False
+                              
                 
         except:
             return False
-        
+            
         return True
         
     def __sendHandshakeAck(self, clientname, addr, allowed=True):
@@ -319,10 +320,11 @@ class mrSocketManager(mrNetworkListener):
         @param addr: Address information of client
         @return: True if client added
         '''
-        if type(clientname) == str and type(addr) == tuple and len(addr) == 2:
+        if type(clientname) == str and type(addr) == tuple and len(addr) == 2 and not self.__isClientInList(clientname, addr):
             self.__connectedClients.append( (clientname, addr) )
             self._processOnClientAddedListener( (clientname, addr) )
             return True
+        
         return False
                     
     def __removeClientFormList(self, clientname, addr):
