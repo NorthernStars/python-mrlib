@@ -25,10 +25,7 @@ class mrNetworkListener(object):
         '''
         Function to handle onClientAddedListener
         '''
-        print "listener", self.__onClientAddedList
-        print "clientData", clientData
         for listener in self.__onClientAddedList:
-            print "listener call", listener
             if listener != None:
                 start_new_thread( listener, (clientData) )
             
