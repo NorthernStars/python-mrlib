@@ -13,9 +13,8 @@ from kivy.uix.image import AsyncImage
 from kivy.graphics import Color, Rectangle, Line, Ellipse
 from kivy.graphics.context_instructions import PushMatrix, PopMatrix, Rotate
 
-from mrLib.networking.data.mrVisionData import mrVisionObject
-from mrLib.networking.data.mrVisionData import VISION_OBJ_BOT, VISION_OBJ_RECT, VISION_OBJ_LINE
-from mrLib.networking.data.mrVisionData import VISION_OBJ_DOT, VISION_OBJ_CIRCLE, VISION_OBJ_TEXT, VISION_OBJ_IMG
+from mrLib.networking.data.mrGraphicsData import mrGraphicsObject, mrGraphicsBot, mrGraphicsCircle, mrGraphicsDot, mrGraphicsText
+from mrLib.networking.data.mrGraphicsData import mrGraphicsImage, mrGraphicsLine, mrGraphicsRectangle
 
 class AbstractGraphicsSzenario(FloatLayout):
     '''
@@ -28,23 +27,29 @@ class AbstractGraphicsSzenario(FloatLayout):
     '''
     _guiObjs = {}
     
-    def cvPos(self, pos=(0,0)):
+    def convertPosition(self, pos=(0,0)):
         '''
         Converts relative positions
         @param pos: Position (x,y)
         @return: Converted position (x,y)
         '''
-        return (self.x+pos[0]*self.width, self.y+pos[1]*self.height)
+        if type(pos) == tuple:
+            return (self.x+pos[0]*self.width, self.y+pos[1]*self.height)
+        else:
+            return self.x+pos*self.width
     
-    def cvSize(self, size=(0,0)):
+    def convertSize(self, size=(0,0)):
         '''
         Converts relative size
         @param size: Size (w,h)
         @return: Converted size (x,y)
         '''
-        return (size[0]*self.width, size[1]*self.height)
+        if type(size) == tuple:
+            return (size[0]*self.width, size[1]*self.height)
+        else:
+            return size*self.width
     
-    def cvPoints(self, points=[]):
+    def convertPoints(self, points=[]):
         '''
         Converts relative points
         @param points: List [x1, y1, x2, y2, ...] of points
@@ -62,35 +67,23 @@ class AbstractGraphicsSzenario(FloatLayout):
             retPoints.append(p)
         return retPoints
     
-    def _updateObj(self, obj=mrVisionObject()):
+    def _updateObj(self, obj=None):
         '''
         Updates a object if object already on widget.
         Otherwise it will create a object
         Override this function to create your own
         apperance of ojects
-        '''
-        assert isinstance(obj, mrVisionObject)
+        '''        
+        assert isinstance(obj, mrGraphicsObject)
+
+        if type(obj) == None:
+            return False
 
         # get obj attributes
-        typ = obj.getType()
-        bid = obj.getID()
-        name = obj.getName()
-        loc = obj.getLocation()
-        points = obj.getPoints()
-        angle = obj.getAngle()
-        radius = obj.getRadius()
-        size = obj.getSize()
+        objID = obj.getID()
+        objname = obj.getName()
+        loc = self.convertPosition( obj.getLocation() )
         color = obj.getColor()
-        textcolor = obj.getTextColor()
-        objname = str(bid)+":"+name
-        text = obj.getText()
-        src = obj.getSrc()
-        
-        # convert position and sizes
-        loc = self.cvPos(loc)
-        size = self.cvSize(size)
-        radius = self.cvSize( (radius, radius) )[0]
-        points = self.cvPoints(points)
         
         # get object from widget children or canvas or None if not found
         wObj = self._getObjFromWidget(obj)
@@ -103,33 +96,67 @@ class AbstractGraphicsSzenario(FloatLayout):
             # set color
             Color( color[0], color[1], color[2], color[3] )
             
-            if typ == VISION_OBJ_BOT:
+            if type(obj) == mrGraphicsBot:
                 # draw bot
-                pos = ( loc[0]-radius, loc[1]-radius  )
-                size = (5,5)
+                assert isinstance(obj, mrGraphicsBot)
+                size = self.convertSize( obj.getSize() )
+                angle = obj.getAngle()
+                viewBorder = 0.2
+                p0 = ( loc[0]-size[0]*0.5, loc[1]-size[1]*0.5  )            # bottom left
+                p1 = ( p0[0]+size[0], p0[1] )                               # bottom right
+                p2 = ( p1[0], p1[1]+size[1] )                               # top right
+                p3 = ( p0[0], p0[1]+size[1] )                               # top left
+                pM = ( p0[0]+size[0]*viewBorder, p0[1]+(p3[1]-p0[1])*0.5 )  # middle between p0 and p3
+                lineW = 1.2
+                
+                points = [ p0[0], p0[1], p1[0], p1[1], p2[0], p2[1], p3[0], p3[1], p0[0], p0[1]  ]  # outer line
+                points2 = [ p1[0]-size[0]*viewBorder, p1[1]+size[1]*viewBorder,
+                           pM[0], pM[1],
+                           p2[0]-size[0]*viewBorder, p2[1]-size[1]*viewBorder,
+                           p1[0]-size[0]*viewBorder, p1[1]+size[1]*viewBorder ]                     # view direction
+
                 if update:
                     # update object
-                    assert isinstance(wObj, Widget)
-                    if type(wObj) == Widget:
-                        wObj.canvas.clear()
+                    assert isinstance(wObj, list)
+                    if type(wObj) == list:
+                        wObj[0].canvas.clear()
+                        
                 else:
                     # draw new object
-                    wObj = Widget( pos=pos )
-                    lbl = Label( text="  "+objname, pos=wObj.pos )
+                    wObj = [Widget( pos=p0 )]
+                    lbl = Label( text=str(objID)+":"+objname, pos=p3 )
                     lbl.texture_update()
                     tsize = lbl.texture.size
                     lbl.size = (tsize[0], tsize[1])
-                    wObj.add_widget( lbl )
+                    wObj.append(lbl)
                 
                 # draw dot
-                if type(wObj) == Widget:                        
-                    with wObj.canvas:
+                if type(wObj) == list and len(wObj) > 0:
+                    with wObj[0].canvas.before:
+                        PushMatrix()
+                        Rotate( angle=angle, axis=(0,0,1), origin=(loc[0], loc[1], 0) )                        
+                    with wObj[0].canvas.after:
+                        PopMatrix()
+                                                
+                    with wObj[0].canvas:
                         Color( color[0], color[1], color[2], color[3] )
-                        Ellipse( pos=pos, size=size  )
+                        Line( points=points, width=lineW )
+                        Line( points=points2, width=lineW )
+                        
+                    with wObj[1].canvas.before:
+                        PushMatrix()
+                        Rotate( angle=angle, axis=(0,0,1), origin=(loc[0], loc[1], 0) )                        
+                    with wObj[1].canvas.after:
+                        PopMatrix()
+                        
+                        
             
-            if typ == VISION_OBJ_RECT:
-                # draw rectangle                
+            if type(obj) == mrGraphicsRectangle:
+                # draw rectangle  
+                assert isinstance(obj, mrGraphicsRectangle)
+                size = self.convertSize( obj.getSize() )              
                 pos = ( loc[0]-size[0]/2, loc[1]-size[1]/2 )
+                angle = obj.getAngle()
                 if update:
                     # update object
                     assert isinstance(wObj, Widget)
@@ -151,21 +178,28 @@ class AbstractGraphicsSzenario(FloatLayout):
                         Color( color[0], color[1], color[2], color[3] )
                         Rectangle( size=size, pos=pos )
 
-            if typ == VISION_OBJ_LINE:
-                #draw line             
+
+            if type(obj) == mrGraphicsLine:
+                #draw line
+                assert isinstance(obj, mrGraphicsLine)
+                points = self.convertPoints( obj.getPoints() )
+                width = self.convertSize( obj.getWidth() )       
                 if update:
                     # update object
                     assert isinstance(wObj, Line)
                     wObj.points = points
-                    wObj.width = radius
+                    wObj.width = width
                 else:
                     # draw new object
-                    wObj = Line( points=points, width=radius )
+                    wObj = Line( points=points, width=width )
             
-            if typ == VISION_OBJ_DOT:
+            
+            if type(obj) == mrGraphicsDot:
                 #draw dot
-                pos = ( loc[0]-radius/2, loc[1]-radius/2  )                
-                size = (radius, radius)
+                assert isinstance(obj, mrGraphicsDot)
+                radius = self.convertSize( obj.getRadius() )
+                size = (2*radius, 2*radius)
+                pos = ( loc[0]-radius, loc[1]-radius  )
                 if update:
                     # update object
                     assert isinstance(wObj, Ellipse)
@@ -175,18 +209,27 @@ class AbstractGraphicsSzenario(FloatLayout):
                     # draw new object
                     wObj = Ellipse( pos=pos, size=size  )
             
-            if typ == VISION_OBJ_CIRCLE:
+            
+            if type(obj) == mrGraphicsCircle:
                 #draw cricle
+                assert isinstance(obj, mrGraphicsCircle)
+                radius = self.convertSize( obj.getRadius() )
+                width = self.convertSize( obj.getWidth() )
                 if update:
                     # update object
                     assert isinstance(wObj, Line)                
                     wObj.circle = (loc[0], loc[1], radius)
                 else:
                     # draw new object
-                    wObj = Line( circle=(loc[0], loc[1], radius) )
+                    wObj = Line( circle=(loc[0], loc[1], radius), width=width )
                     
-            if typ == VISION_OBJ_TEXT:
-                #draw cricle
+                    
+            if type(obj) == mrGraphicsText:
+                #draw text
+                assert isinstance(obj, mrGraphicsText)
+                text = obj.getText()
+                textcolor = obj.getTextColor()
+                angle = obj.getAngle()
                 if update:
                     # update object
                     assert isinstance(wObj, Label)                
@@ -208,8 +251,14 @@ class AbstractGraphicsSzenario(FloatLayout):
                     with wObj.canvas.after:                        
                         PopMatrix()
                         
-            if typ == VISION_OBJ_IMG:
+                        
+            if type(obj) == mrGraphicsImage:
                 # draw image
+                assert isinstance(obj, mrGraphicsImage)
+                src = obj.getSource()
+                keepRatio = obj.keepRatio()
+                size = self.convertSize( obj.getSize() )                
+                angle = obj.getAngle()
                 if update:
                     # update object
                     assert isinstance(wObj, AsyncImage)
@@ -217,11 +266,18 @@ class AbstractGraphicsSzenario(FloatLayout):
                         wObj.source = src
                         wObj.reload()
                     wObj.pos = loc
+                    wObj.keep_ratio = keepRatio
                     wObj.size = size
+                    size = wObj.size
+                    pos = (loc[0]-size[0]*0.5, loc[1]-size[1]*0.5)
+                    wObj.pos = pos
                 else:
                     # draw new object
                     if isfile(src):
-                        wObj = AsyncImage( source=src, pos=loc, size=size, allow_stretch=True, keep_ratio=False )
+                        wObj = AsyncImage( source=src, size=size, allow_stretch=True, keep_ratio=keepRatio )
+                        size = wObj.size
+                        pos = (loc[0]-size[0]*0.5, loc[1]-size[1]*0.5)
+                        wObj.pos = pos
                         
                         with wObj.canvas.before:
                             PushMatrix()
@@ -230,14 +286,15 @@ class AbstractGraphicsSzenario(FloatLayout):
                             PopMatrix()
         
         # check if to add new object
-        if not update and wObj != None:    
+        if not update and wObj != None:
+            objname = str(objID)+":"+objname
             self._guiObjs[objname] = wObj
             
         # send update request to canvas
         self.canvas.ask_update()
         
         
-    def _getObjFromWidget(self, obj=mrVisionObject()):
+    def _getObjFromWidget(self, obj=mrGraphicsObject()):
         '''
         Searches for a object in object list
         and returns it.
@@ -245,12 +302,11 @@ class AbstractGraphicsSzenario(FloatLayout):
         @param obj: mrVisionObject to search for
         @return: Widget object or None
         '''
-        assert isinstance(obj, mrVisionObject)
+        assert isinstance(obj, mrGraphicsObject)
         objname = str(obj.getID())+":"+obj.getName()
         
         for key in self._guiObjs.keys():
-            if key == objname:
-                # found object
+            if str(key) == objname:
                 return self._guiObjs[key]
         
         return None
@@ -277,7 +333,7 @@ class AbstractGraphicsSzenario(FloatLayout):
     def drawGui(self, data=None):
         '''
         Recives vision data and maniupulates widget
-        @param data: mrVisionData object
+        @param data: List of objects of type mrGraphicsObject
         '''
         if type(data) == list:
             # clear drawn objects
