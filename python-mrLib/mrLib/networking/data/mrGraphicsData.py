@@ -260,9 +260,9 @@ class mrGraphicsText(mrGraphicsAngleObject):
     '''
     __textcolor = (1,1,1,1)     # [r,g,b,a]
     __text = ""
-    __fontsize = 12
+    __fontsize = None
     
-    def __init__(self, objID=None, location=(0,0), color=(1,1,1,1), name="", angle=0.0, text="", textcolor=[1,1,1,1], fontsize=12):
+    def __init__(self, objID=None, location=(0,0), color=(1,1,1,1), name="", angle=0.0, text="", textcolor=[1,1,1,1], fontsize=None):
         '''
         Constructor
         @param objID: ID of object        
@@ -274,6 +274,7 @@ class mrGraphicsText(mrGraphicsAngleObject):
         mrGraphicsAngleObject.__init__(self, objID=objID, location=location, color=color, name=name, angle=angle)
         self.setText(text)
         self.setTextColor(textcolor)
+        self.setFontSize(fontsize)
         
     def getTextColor(self):
         return self.__textcolor

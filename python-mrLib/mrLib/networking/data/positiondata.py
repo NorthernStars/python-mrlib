@@ -1,16 +1,19 @@
 # ./positiondata.py
 # -*- coding: utf-8 -*-
 # PyXB bindings for NM:e92452c8d3e28a9e27abfc9994d2007779e7f4c9
-# Generated 2013-11-11 16:19:52.912548 by PyXB version 1.2.3
+# Generated 2013-11-13 09:27:44.718769 by PyXB version 1.2.3
 # Namespace AbsentNamespace0
 
+import pyxb
+import pyxb.binding
 import pyxb.binding.saxer
 import io
 import pyxb.utils.utility
 import pyxb.utils.domutils
+import sys
 
 # Unique identifier for bindings created at the same time
-_GenerationUID = pyxb.utils.utility.UniqueIdentifier('urn:uuid:b6a9ea8c-4ae4-11e3-a3b4-0016e6870683')
+_GenerationUID = pyxb.utils.utility.UniqueIdentifier('urn:uuid:78544f98-4c3d-11e3-828c-0016e6870683')
 
 # Version of PyXB used to generate the bindings
 _PyXBVersion = '1.2.3'
