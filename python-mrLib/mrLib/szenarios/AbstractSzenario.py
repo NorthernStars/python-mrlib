@@ -110,29 +110,30 @@ class AbstractGraphicsSzenario(FloatLayout):
                            p1[0]-size[0]*viewBorder, p1[1]+size[1]*viewBorder ]                     # view direction
 
                 # draw object
-                wObj = Widget( pos=p0 )
+                wObj = [Widget( pos=p0 )]
                 lbl = Label( text=str(objID)+":"+objname, pos=p3 )
                 lbl.texture_update()
                 tsize = lbl.texture.size
                 lbl.size = (tsize[0], tsize[1])
+                wObj.append(lbl)
                 
                 # draw dot
-                with wObj.canvas.before:
+                with wObj[0].canvas.before:
                     PushMatrix()
                     Rotate( angle=angle, axis=(0,0,1), origin=(location[0], location[1], 0) )                        
-                with wObj.canvas.after:
+                with wObj[0].canvas.after:
                     PopMatrix()
                                             
-                with wObj.canvas:
+                with wObj[0].canvas:
                     Color( color[0], color[1], color[2], color[3] )
                     Line( points=points, width=lineW )
                     Line( points=points2, width=lineW )
                    
                 if angle != 0: 
-                    with lbl.canvas.before:
+                    with wObj[1].canvas.before:
                         PushMatrix()
                         Rotate( angle=angle, axis=(0,0,1), origin=(location[0], location[1], 0) )                        
-                    with lbl.canvas.after:
+                    with wObj[1].canvas.after:
                         PopMatrix()
                         
                         
