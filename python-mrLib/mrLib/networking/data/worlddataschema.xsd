@@ -32,12 +32,12 @@
 
   <xs:complexType name="referencePoint">
     <xs:sequence>
-      <xs:element name="pid" type="id" minOccurs="0"/>
-      <xs:element name="position" type="double" minOccurs="0"/>
+      <xs:element name="pointtype" type="id" minOccurs="0"/>
+      <xs:element name="position" type="serverPoint" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="double">
+  <xs:complexType name="serverPoint">
     <xs:complexContent>
       <xs:extension base="point2D">
         <xs:sequence>
@@ -89,6 +89,8 @@
   <xs:simpleType name="id">
     <xs:restriction base="xs:string">
       <xs:enumeration value="nofixedname"/>
+      <xs:enumeration value="player"/>
+      <xs:enumeration value="ball"/>
       <xs:enumeration value="bottom_center"/>
       <xs:enumeration value="bottom_left_corner"/>
       <xs:enumeration value="bottom_left_goal"/>
@@ -108,8 +110,6 @@
       <xs:enumeration value="top_right_goal"/>
       <xs:enumeration value="top_right_pole"/>
       <xs:enumeration value="top_right_small_area"/>
-      <xs:enumeration value="player"/>
-      <xs:enumeration value="ball"/>
     </xs:restriction>
   </xs:simpleType>
 
@@ -117,6 +117,7 @@
     <xs:restriction base="xs:string">
       <xs:enumeration value="yellow"/>
       <xs:enumeration value="blue"/>
+      <xs:enumeration value="none"/>
     </xs:restriction>
   </xs:simpleType>
 </xs:schema>

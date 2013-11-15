@@ -32,7 +32,7 @@ class mrSocketManager(mrNetworkListener):
     __useHandshake = True
     __overwriteNewClients = False
     
-    __recieveBufferSize = 4096
+    __recieveBufferSize = 16384
     
 
     def __init__(self, host="127.0.0.1", port=9090, server=False, udpOn=False, name="client", useHandshake=True, overwriteNewClients=False):

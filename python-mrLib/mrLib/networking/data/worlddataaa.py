@@ -1,16 +1,19 @@
-# ./worlddata.py
+# ./worlddataaa.py
 # -*- coding: utf-8 -*-
 # PyXB bindings for NM:e92452c8d3e28a9e27abfc9994d2007779e7f4c9
-# Generated 2013-11-13 09:31:06.925920 by PyXB version 1.2.3
+# Generated 2013-11-15 17:44:18.061515 by PyXB version 1.2.3
 # Namespace AbsentNamespace0
 
+import pyxb
+import pyxb.binding
 import pyxb.binding.saxer
 import io
 import pyxb.utils.utility
 import pyxb.utils.domutils
+import sys
 
 # Unique identifier for bindings created at the same time
-_GenerationUID = pyxb.utils.utility.UniqueIdentifier('urn:uuid:f0da2d0c-4c3d-11e3-8130-0016e6870683')
+_GenerationUID = pyxb.utils.utility.UniqueIdentifier('urn:uuid:2b5f1af4-4e15-11e3-82df-0016e6870683')
 
 # Version of PyXB used to generate the bindings
 _PyXBVersion = '1.2.3'
@@ -105,6 +108,8 @@ class id (pyxb.binding.datatypes.string, pyxb.binding.basis.enumeration_mixin):
     _Documentation = None
 id._CF_enumeration = pyxb.binding.facets.CF_enumeration(value_datatype=id, enum_prefix=None)
 id.nofixedname = id._CF_enumeration.addEnumeration(unicode_value=u'nofixedname', tag=u'nofixedname')
+id.player = id._CF_enumeration.addEnumeration(unicode_value=u'player', tag=u'player')
+id.ball = id._CF_enumeration.addEnumeration(unicode_value=u'ball', tag=u'ball')
 id.bottom_center = id._CF_enumeration.addEnumeration(unicode_value=u'bottom_center', tag=u'bottom_center')
 id.bottom_left_corner = id._CF_enumeration.addEnumeration(unicode_value=u'bottom_left_corner', tag=u'bottom_left_corner')
 id.bottom_left_goal = id._CF_enumeration.addEnumeration(unicode_value=u'bottom_left_goal', tag=u'bottom_left_goal')
@@ -124,8 +129,6 @@ id.top_right_corner = id._CF_enumeration.addEnumeration(unicode_value=u'top_righ
 id.top_right_goal = id._CF_enumeration.addEnumeration(unicode_value=u'top_right_goal', tag=u'top_right_goal')
 id.top_right_pole = id._CF_enumeration.addEnumeration(unicode_value=u'top_right_pole', tag=u'top_right_pole')
 id.top_right_small_area = id._CF_enumeration.addEnumeration(unicode_value=u'top_right_small_area', tag=u'top_right_small_area')
-id.player = id._CF_enumeration.addEnumeration(unicode_value=u'player', tag=u'player')
-id.ball = id._CF_enumeration.addEnumeration(unicode_value=u'ball', tag=u'ball')
 id._InitializeFacetMap(id._CF_enumeration)
 Namespace.addCategoryObject('typeBinding', u'id', id)
 
@@ -140,6 +143,7 @@ class team (pyxb.binding.datatypes.string, pyxb.binding.basis.enumeration_mixin)
 team._CF_enumeration = pyxb.binding.facets.CF_enumeration(value_datatype=team, enum_prefix=None)
 team.yellow = team._CF_enumeration.addEnumeration(unicode_value=u'yellow', tag=u'yellow')
 team.blue = team._CF_enumeration.addEnumeration(unicode_value=u'blue', tag=u'blue')
+team.none = team._CF_enumeration.addEnumeration(unicode_value=u'none', tag=u'none')
 team._InitializeFacetMap(team._CF_enumeration)
 Namespace.addCategoryObject('typeBinding', u'team', team)
 
@@ -265,11 +269,11 @@ class referencePoint (pyxb.binding.basis.complexTypeDefinition):
     _AttributeMap = {}
     # Base type is pyxb.binding.datatypes.anyType
     
-    # Element pid uses Python identifier pid
-    __pid = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'pid'), 'pid', '__AbsentNamespace0_referencePoint_pid', False, pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/worlddataschema.xsd', 35, 6), )
+    # Element pointtype uses Python identifier pointtype
+    __pointtype = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'pointtype'), 'pointtype', '__AbsentNamespace0_referencePoint_pointtype', False, pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/worlddataschema.xsd', 35, 6), )
 
     
-    pid = property(__pid.value, __pid.set, None, None)
+    pointtype = property(__pointtype.value, __pointtype.set, None, None)
 
     
     # Element position uses Python identifier position
@@ -279,7 +283,7 @@ class referencePoint (pyxb.binding.basis.complexTypeDefinition):
     position = property(__position.value, __position.set, None, None)
 
     _ElementMap.update({
-        __pid.name() : __pid,
+        __pointtype.name() : __pointtype,
         __position.name() : __position
     })
     _AttributeMap.update({
@@ -320,7 +324,7 @@ class ballPosition (referencePoint):
     _AttributeMap = referencePoint._AttributeMap.copy()
     # Base type is referencePoint
     
-    # Element pid (pid) inherited from referencePoint
+    # Element pointtype (pointtype) inherited from referencePoint
     
     # Element position (position) inherited from referencePoint
     _ElementMap.update({
@@ -332,27 +336,27 @@ class ballPosition (referencePoint):
 Namespace.addCategoryObject('typeBinding', u'ballPosition', ballPosition)
 
 
-# Complex type double with content type ELEMENT_ONLY
-class double (point2D):
-    """Complex type double with content type ELEMENT_ONLY"""
+# Complex type serverPoint with content type ELEMENT_ONLY
+class serverPoint (point2D):
+    """Complex type serverPoint with content type ELEMENT_ONLY"""
     _TypeDefinition = None
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_ELEMENT_ONLY
     _Abstract = False
-    _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'double')
+    _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'serverPoint')
     _XSDLocation = pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/worlddataschema.xsd', 40, 2)
     _ElementMap = point2D._ElementMap.copy()
     _AttributeMap = point2D._AttributeMap.copy()
     # Base type is point2D
     
     # Element x uses Python identifier x
-    __x = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'x'), 'x', '__AbsentNamespace0_double_x', False, pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/worlddataschema.xsd', 44, 10), )
+    __x = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'x'), 'x', '__AbsentNamespace0_serverPoint_x', False, pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/worlddataschema.xsd', 44, 10), )
 
     
     x = property(__x.value, __x.set, None, None)
 
     
     # Element y uses Python identifier y
-    __y = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'y'), 'y', '__AbsentNamespace0_double_y', False, pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/worlddataschema.xsd', 45, 10), )
+    __y = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'y'), 'y', '__AbsentNamespace0_serverPoint_y', False, pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/worlddataschema.xsd', 45, 10), )
 
     
     y = property(__y.value, __y.set, None, None)
@@ -364,7 +368,7 @@ class double (point2D):
     _AttributeMap.update({
         
     })
-Namespace.addCategoryObject('typeBinding', u'double', double)
+Namespace.addCategoryObject('typeBinding', u'serverPoint', serverPoint)
 
 
 # Complex type player with content type ELEMENT_ONLY
@@ -379,7 +383,7 @@ class player (referencePoint):
     _AttributeMap = referencePoint._AttributeMap.copy()
     # Base type is referencePoint
     
-    # Element pid (pid) inherited from referencePoint
+    # Element pointtype (pointtype) inherited from referencePoint
     
     # Element position (position) inherited from referencePoint
     
@@ -584,9 +588,9 @@ score._Automaton = _BuildAutomaton_()
 
 
 
-referencePoint._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'pid'), id, scope=referencePoint, location=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/worlddataschema.xsd', 35, 6)))
+referencePoint._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'pointtype'), id, scope=referencePoint, location=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/worlddataschema.xsd', 35, 6)))
 
-referencePoint._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'position'), double, scope=referencePoint, location=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/worlddataschema.xsd', 36, 6)))
+referencePoint._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'position'), serverPoint, scope=referencePoint, location=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/worlddataschema.xsd', 36, 6)))
 
 def _BuildAutomaton_2 ():
     # Remove this helper function from the namespace after it is invoked
@@ -602,7 +606,7 @@ def _BuildAutomaton_2 ():
     states = []
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_0, False))
-    symbol = pyxb.binding.content.ElementUse(referencePoint._UseForTag(pyxb.namespace.ExpandedName(None, u'pid')), pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/worlddataschema.xsd', 35, 6))
+    symbol = pyxb.binding.content.ElementUse(referencePoint._UseForTag(pyxb.namespace.ExpandedName(None, u'pointtype')), pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/worlddataschema.xsd', 35, 6))
     st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_0)
     final_update = set()
@@ -640,7 +644,7 @@ def _BuildAutomaton_3 ():
     states = []
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_0, False))
-    symbol = pyxb.binding.content.ElementUse(ballPosition._UseForTag(pyxb.namespace.ExpandedName(None, u'pid')), pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/worlddataschema.xsd', 35, 6))
+    symbol = pyxb.binding.content.ElementUse(ballPosition._UseForTag(pyxb.namespace.ExpandedName(None, u'pointtype')), pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/worlddataschema.xsd', 35, 6))
     st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_0)
     final_update = set()
@@ -664,9 +668,9 @@ ballPosition._Automaton = _BuildAutomaton_3()
 
 
 
-double._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'x'), pyxb.binding.datatypes.double, scope=double, location=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/worlddataschema.xsd', 44, 10)))
+serverPoint._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'x'), pyxb.binding.datatypes.double, scope=serverPoint, location=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/worlddataschema.xsd', 44, 10)))
 
-double._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'y'), pyxb.binding.datatypes.double, scope=double, location=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/worlddataschema.xsd', 45, 10)))
+serverPoint._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'y'), pyxb.binding.datatypes.double, scope=serverPoint, location=pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/worlddataschema.xsd', 45, 10)))
 
 def _BuildAutomaton_4 ():
     # Remove this helper function from the namespace after it is invoked
@@ -677,11 +681,11 @@ def _BuildAutomaton_4 ():
     counters = set()
     states = []
     final_update = None
-    symbol = pyxb.binding.content.ElementUse(double._UseForTag(pyxb.namespace.ExpandedName(None, u'x')), pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/worlddataschema.xsd', 44, 10))
+    symbol = pyxb.binding.content.ElementUse(serverPoint._UseForTag(pyxb.namespace.ExpandedName(None, u'x')), pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/worlddataschema.xsd', 44, 10))
     st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_0)
     final_update = set()
-    symbol = pyxb.binding.content.ElementUse(double._UseForTag(pyxb.namespace.ExpandedName(None, u'y')), pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/worlddataschema.xsd', 45, 10))
+    symbol = pyxb.binding.content.ElementUse(serverPoint._UseForTag(pyxb.namespace.ExpandedName(None, u'y')), pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/worlddataschema.xsd', 45, 10))
     st_1 = fac.State(symbol, is_initial=False, final_update=final_update, is_unordered_catenation=False)
     states.append(st_1)
     transitions = []
@@ -691,7 +695,7 @@ def _BuildAutomaton_4 ():
     transitions = []
     st_1._set_transitionSet(transitions)
     return fac.Automaton(states, counters, False, containing_state=None)
-double._Automaton = _BuildAutomaton_4()
+serverPoint._Automaton = _BuildAutomaton_4()
 
 
 
@@ -725,7 +729,7 @@ def _BuildAutomaton_5 ():
     counters.add(cc_4)
     states = []
     final_update = None
-    symbol = pyxb.binding.content.ElementUse(player._UseForTag(pyxb.namespace.ExpandedName(None, u'pid')), pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/worlddataschema.xsd', 35, 6))
+    symbol = pyxb.binding.content.ElementUse(player._UseForTag(pyxb.namespace.ExpandedName(None, u'pointtype')), pyxb.utils.utility.Location('/home/northernstars/git/python-mrlib/python-mrLib/mrLib/networking/data/worlddataschema.xsd', 35, 6))
     st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_0)
     final_update = None

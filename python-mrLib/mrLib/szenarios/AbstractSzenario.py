@@ -26,6 +26,8 @@ class AbstractGraphicsSzenario(FloatLayout):
        data and create gui on this class.
     '''
     
+    _pushedData = None
+    
     def convertPosition(self, pos=(0,0)):
         '''
         Converts relative positions
@@ -66,6 +68,21 @@ class AbstractGraphicsSzenario(FloatLayout):
             retPoints.append(p)
         return retPoints
     
+    def pushData(self, data):
+        '''
+        Pushes data into szenario for next scheduled run
+        '''
+        self._pushedData = data
+        
+    def _selectData(self, data):
+        '''
+        Selects transmitted or pushed data
+        '''
+        if data == None:
+            return self._pushedData
+        
+        return data
+    
     def drawObj(self, obj=None):
         '''
         Updates a object if object already on widget.
@@ -95,45 +112,36 @@ class AbstractGraphicsSzenario(FloatLayout):
                 assert isinstance(obj, mrGraphicsBot)
                 size = self.convertSize( obj.getSize() )
                 angle = obj.getAngle()
-                viewBorder = 0.2
-                p0 = ( location[0]-size[0]*0.5, location[1]-size[1]*0.5  )            # bottom left
-                p1 = ( p0[0]+size[0], p0[1] )                               # bottom right
-                p2 = ( p1[0], p1[1]+size[1] )                               # top right
-                p3 = ( p0[0], p0[1]+size[1] )                               # top left
-                pM = ( p0[0]+size[0]*viewBorder, p0[1]+(p3[1]-p0[1])*0.5 )  # middle between p0 and p3
-                lineW = 1.2
-                
-                points = [ p0[0], p0[1], p1[0], p1[1], p2[0], p2[1], p3[0], p3[1], p0[0], p0[1]  ]  # outer line
-                points2 = [ p1[0]-size[0]*viewBorder, p1[1]+size[1]*viewBorder,
-                           pM[0], pM[1],
-                           p2[0]-size[0]*viewBorder, p2[1]-size[1]*viewBorder,
-                           p1[0]-size[0]*viewBorder, p1[1]+size[1]*viewBorder ]                     # view direction
+                lineW, points, points2, corners = self.getBotDrawData(location, size)
+                print "points", points, points2
+                p0 = corners[0]
+                p3 = corners[3]
 
                 # draw object
-                wObj = [Widget( pos=p0 )]
+                wObj = {'widget': Widget( pos=p0 ), 'label': None}
                 lbl = Label( text=str(objID)+":"+objname, pos=p3 )
                 lbl.texture_update()
                 tsize = lbl.texture.size
                 lbl.size = (tsize[0], tsize[1])
-                wObj.append(lbl)
+                wObj['label'] = lbl
                 
                 # draw dot
-                with wObj[0].canvas.before:
+                with wObj['widget'].canvas.before:
                     PushMatrix()
                     Rotate( angle=angle, axis=(0,0,1), origin=(location[0], location[1], 0) )                        
-                with wObj[0].canvas.after:
+                with wObj['widget'].canvas.after:
                     PopMatrix()
                                             
-                with wObj[0].canvas:
+                with wObj['widget'].canvas:
                     Color( color[0], color[1], color[2], color[3] )
                     Line( points=points, width=lineW )
                     Line( points=points2, width=lineW )
                    
                 if angle != 0: 
-                    with wObj[1].canvas.before:
+                    with wObj['label'].canvas.before:
                         PushMatrix()
                         Rotate( angle=angle, axis=(0,0,1), origin=(location[0], location[1], 0) )                        
-                    with wObj[1].canvas.after:
+                    with wObj['label'].canvas.after:
                         PopMatrix()
                         
                         
@@ -250,6 +258,26 @@ class AbstractGraphicsSzenario(FloatLayout):
         # return new object
         return wObj
     
+    def getBotDrawData(self, location=(0,0), size=(0,0)):
+        '''
+        @return: Data for drawing a bot background
+        '''
+        viewBorder = 0.2
+        p0 = ( location[0]-size[0]*0.5, location[1]-size[1]*0.5  )  # bottom left
+        p1 = ( p0[0]+size[0], p0[1] )                               # bottom right
+        p2 = ( p1[0], p1[1]+size[1] )                               # top right
+        p3 = ( p0[0], p0[1]+size[1] )                               # top left
+        pM = ( p0[0]+size[0]*viewBorder, p0[1]+(p3[1]-p0[1])*0.5 )  # middle between p0 and p3
+        lineW = 1.2
+        
+        points = [ p0[0], p0[1], p1[0], p1[1], p2[0], p2[1], p3[0], p3[1], p0[0], p0[1]  ]  # outer line
+        points2 = [ p1[0]-size[0]*viewBorder, p1[1]+size[1]*viewBorder,
+                   pM[0], pM[1],
+                   p2[0]-size[0]*viewBorder, p2[1]-size[1]*viewBorder,
+                   p1[0]-size[0]*viewBorder, p1[1]+size[1]*viewBorder ]                     # view direction
+        
+        return lineW, points, points2, [p0, p1, p2, p3]
+    
     
     def clearObjects(self):
         '''
@@ -268,6 +296,9 @@ class AbstractGraphicsSzenario(FloatLayout):
         Recives vision data and maniupulates widget
         @param data: List of objects of type mrGraphicsObject
         '''
+        if data == None:
+            data = self.__pushedData
+        
         retList = []
         if type(data) == list:
             # clear drawn objects
