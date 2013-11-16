@@ -92,7 +92,7 @@ class mrSocketManager(mrNetworkListener):
                               
             self.__connected = True            
         except:
-            print "connection error!"
+            print "error on binding server to " + str(self.__host) + ":" + str(self.__port)
             return
         
         self.__connectedClients.append( self.__socket )
