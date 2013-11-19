@@ -189,6 +189,7 @@ class mrSocketManager(mrNetworkListener):
         request = connectionRequest()
         request.clientname = str(self.__name)
         self.__send( request.toxml("utf-8", element_name="connectionrequest") )
+        print "send connection request"
         
         # recieve response
         data = None
@@ -202,10 +203,13 @@ class mrSocketManager(mrNetworkListener):
                 # connection established
                 self.__connected = True
                 self.__serverName = str(dom.servername)
+                print "connection established to", self.__serverName
         
                 # send established response to server
                 established = connectionEstablished()
                 self.__send( established.toxml("utf-8", element_name="connectionestablished") )
+            else:
+                print "connection not allowd"
         
         
     def __handshakeServer(self, data, addr):

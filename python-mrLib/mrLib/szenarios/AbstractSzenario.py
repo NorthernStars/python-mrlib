@@ -27,6 +27,8 @@ class AbstractGraphicsSzenario(FloatLayout):
     '''
     
     _pushedData = None
+    _widthMultiply = 1.0
+    _heightMultiply = 0.75
     
     def convertPosition(self, pos=(0,0)):
         '''
@@ -35,8 +37,13 @@ class AbstractGraphicsSzenario(FloatLayout):
         @return: Converted position (x,y)
         '''
         if type(pos) == tuple:
+            pos = ( pos[0]/self._widthMultiply, pos[1]/self._heightMultiply )
+            
+            if pos[0] > 1.0 or pos[1] > 1.0:
+                pos = (pos[0]/800, pos[1]/600)
             return (self.x+pos[0]*self.width, self.y+pos[1]*self.height)
         else:
+            pos /= self._widthMultiply
             return self.x+pos*self.width
     
     def convertSize(self, size=(0,0)):
@@ -46,8 +53,10 @@ class AbstractGraphicsSzenario(FloatLayout):
         @return: Converted size (x,y)
         '''
         if type(size) == tuple:
+            size = ( size[0]/self._widthMultiply, size[1]/self._heightMultiply )
             return (size[0]*self.width, size[1]*self.height)
         else:
+            size /= self._widthMultiply
             return size*self.width
     
     def convertPoints(self, points=[]):
@@ -60,9 +69,11 @@ class AbstractGraphicsSzenario(FloatLayout):
         retPoints = []
         for p in points:
             if isX:
+                p /= self._widthMultiply
                 p = self.x+self.width*p
                 isX = False
             else:
+                p /= self._heightMultiply
                 p = self.y+self.height*p
                 isX = True
             retPoints.append(p)
