@@ -194,7 +194,7 @@ class mrSocketManager(mrNetworkListener):
         # recieve response
         data = None
         while not data:
-            data = self.__recvData()[0]
+            data, addr= self.__recvData()
             
         dom = CreateFromDocument(data)
         if type(dom) == connectionAcknowlege:
@@ -203,13 +203,13 @@ class mrSocketManager(mrNetworkListener):
                 # connection established
                 self.__connected = True
                 self.__serverName = str(dom.servername)
-                print "connection established to", self.__serverName
+                self._processOnClientAddedListener(addr)
         
                 # send established response to server
                 established = connectionEstablished()
                 self.__send( established.toxml("utf-8", element_name="connectionestablished") )
             else:
-                print "connection not allowd"
+                print "connection not allowed"
         
         
     def __handshakeServer(self, data, addr):
