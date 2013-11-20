@@ -8,6 +8,7 @@ from socket import socket, AF_INET, SOCK_STREAM, SOCK_DGRAM, SO_REUSEADDR, SOL_S
 from select import select
 from thread import start_new_thread
 
+from mrLib.logging import mrLogger
 from mrNetworkListener import mrNetworkListener
 from mrLib.networking.data.networkhandshake import connectionRequest, connectionEstablished, connectionAcknowlege, CreateFromDocument
 
@@ -92,7 +93,8 @@ class mrSocketManager(mrNetworkListener):
                               
             self.__connected = True            
         except:
-            print "error on binding server to " + str(self.__host) + ":" + str(self.__port)
+            mrLogger.logError( "#Socket Manager: Error on binding server to " + str(self.__host) + ":" + str(self.__port) )
+#             print "error on binding server to " + str(self.__host) + ":" + str(self.__port)
             return
         
         self.__connectedClients.append( self.__socket )
@@ -189,7 +191,8 @@ class mrSocketManager(mrNetworkListener):
         request = connectionRequest()
         request.clientname = str(self.__name)
         self.__send( request.toxml("utf-8", element_name="connectionrequest") )
-        print "send connection request"
+        mrLogger.logDebug("#Socket Manager: Send connection request")
+#         print "send connection request"
         
         # recieve response
         data = None
@@ -209,7 +212,8 @@ class mrSocketManager(mrNetworkListener):
                 established = connectionEstablished()
                 self.__send( established.toxml("utf-8", element_name="connectionestablished") )
             else:
-                print "connection not allowed"
+                mrLogger.logDebug("#Socket Manager: Recieved connection not allowed!")
+#                 print "connection not allowed"
         
         
     def __handshakeServer(self, data, addr):
