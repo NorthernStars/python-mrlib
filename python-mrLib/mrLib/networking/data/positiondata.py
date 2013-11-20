@@ -4,13 +4,10 @@
 # Generated 2013-11-13 09:27:44.718769 by PyXB version 1.2.3
 # Namespace AbsentNamespace0
 
-import pyxb
-import pyxb.binding
 import pyxb.binding.saxer
 import io
 import pyxb.utils.utility
 import pyxb.utils.domutils
-import sys
 
 # Unique identifier for bindings created at the same time
 _GenerationUID = pyxb.utils.utility.UniqueIdentifier('urn:uuid:78544f98-4c3d-11e3-828c-0016e6870683')
